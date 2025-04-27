@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Bites - Login</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f5f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            display: flex;
+            width: 900px;
+            max-width: 90%;
+            background-color: white;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .form-side {
+            flex: 1;
+            padding: 40px;
+        }
+        
+        .image-side {
+            flex: 1;
+            background-image: url('https://images.unsplash.com/photo-1535041422672-8c7785bbbaf5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .image-side::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(224, 122, 95, 0.7);
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #e07a5f;
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #3d405b;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #3d405b;
+            font-weight: 500;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        input:focus {
+            border-color: #e07a5f;
+            outline: none;
+        }
+        
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #e07a5f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #c96c52;
+        }
+        
+        .alt-action {
+            margin-top: 20px;
+            text-align: center;
+            color: #666;
+        }
+        
+        .alt-action a {
+            color: #e07a5f;
+            text-decoration: none;
+        }
+        
+        .alt-action a:hover {
+            text-decoration: underline;
+        }
+        
+        .slogan {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            color: white;
+            text-align: center;
+            width: 80%;
+        }
+        
+        .slogan h3 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .slogan p {
+            font-size: 1rem;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .image-side {
+                min-height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-side">
+            <div class="logo">Budget Bites</div>
+            <h2>Sign In</h2>
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit">Sign In</button>
+            </form>
+            <div class="alt-action">
+                <p>Don't have an account? <a href="register.html">Sign Up</a></p>
+            </div>
+        </div>
+        <div class="image-side">
+            <div class="slogan">
+                <h3>Affordable Food for Everyone</h3>
+                <p>Find budget-friendly meals and groceries for students and low-income households</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+</html>

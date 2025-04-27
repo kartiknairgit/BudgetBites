@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Bites - Affordable Food for Students & Low-Income Households</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f5f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .welcome-container {
+            text-align: center;
+        }
+        
+        .welcome-text {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #e07a5f;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .bite {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: #f8f5f2;
+            border-radius: 50%;
+            display: none;
+        }
+        
+        .fadeout {
+            animation: fadeOut 1s forwards;
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-container">
+        <h1 class="welcome-text">Welcome to Budget Bites</h1>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const welcomeText = document.querySelector('.welcome-text');
+            const textWidth = welcomeText.offsetWidth;
+            const textHeight = welcomeText.offsetHeight;
+            
+            // Create random "bites" in the text
+            function createBites() {
+                const numBites = 15; // Number of bites to take
+                const delay = 100; // Delay between bites in ms
+                
+                for (let i = 0; i < numBites; i++) {
+                    setTimeout(() => {
+                        const bite = document.createElement('div');
+                        bite.className = 'bite';
+                        
+                        // Random position within the text
+                        const left = Math.random() * textWidth;
+                        const top = Math.random() * textHeight;
+                        
+                        bite.style.left = left + 'px';
+                        bite.style.top = top + 'px';
+                        bite.style.display = 'block';
+                        
+                        welcomeText.appendChild(bite);
+                        
+                        // For the last few bites, start the fade out
+                        if (i > numBites - 4) {
+                            welcomeText.classList.add('fadeout');
+                        }
+                        
+                        // After the last bite, redirect to login page
+                        if (i === numBites - 1) {
+                            setTimeout(() => {
+                                window.location.href = 'login.html';
+                            }, 1000);
+                        }
+                    }, i * delay);
+                }
+            }
+            
+            // Start the animation after a short delay
+            setTimeout(createBites, 1500);
+        });
+    </script>
+</body>
+</html>

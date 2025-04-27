@@ -1,0 +1,18 @@
+[
+  {
+    "id": "1743921895350",
+    "username": "hello_2",
+    "email": "kartik.n.1101@gmail.com",
+    "password": "$2a$10$XcE8pMBBdKufsjhFN0CayeDs8C2EJ3wFxN6m42Ur3Ky3jHSKmbNoy",
+    "role": "host",
+    "createdAt": "2025-04-06T06:44:55.350Z"
+  },
+  {
+    "id": "1744531726789",
+    "username": "Anirudh",
+    "email": "goatlvl420@gmail.com",
+    "password": "$2a$10$SrsHox6.0XKZRC8nu9R3DOgbLCOpzQkJ9duiMaWoOP3f6F9ZxVJHq",
+    "role": "user",
+    "createdAt": "2025-04-13T08:08:46.789Z"
+  }
+]
