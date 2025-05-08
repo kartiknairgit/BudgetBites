@@ -381,8 +381,17 @@
             <div class="revenue-chart-container">
                 <h3>Weekly Revenue</h3>
                 <div id="revenue-chart" class="revenue-chart">
-                    <!-- Chart bars will be inserted here via JS -->
+                <!-- Mock Data: Weekly revenue chart bars -->
+                <div class="chart-bar" style="height: 80%;"></div>
+                <div class="chart-bar" style="height: 65%;"></div>
+                <div class="chart-bar" style="height: 90%;"></div>
+                <div class="chart-bar" style="height: 70%;"></div>
+                <div class="chart-bar" style="height: 55%;"></div>
+                <div class="chart-bar" style="height: 60%;"></div>
+                <div class="chart-bar" style="height: 85%;"></div>
+                <!-- Chart bars will be inserted here via JS -->
                 </div>
+
                 <div class="chart-labels">
                     <span>Mon</span>
                     <span>Tue</span>
@@ -437,7 +446,7 @@
                     <div class="food-price">$4.50 <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$7.99</span></div>
                     <p class="food-description">Freshly made pasta with seasonal vegetables and homemade sauce.</p>
                     <div class="food-controls">
-                        <button class="btn-sm btn-outline">Edit</button>
+                        <button class="btn-sm btn-outline edit-btn">Edit</button>
                         <button class="btn-sm btn-outline">Pause</button>
                         <button class="btn-sm btn-outline delete-listing">Delete</button>
                     </div>
@@ -454,7 +463,7 @@
                     <div class="food-price">$5.99 <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$12.50</span></div>
                     <p class="food-description">Assorted pastries available at discount at the end of the day. Perfect quality!</p>
                     <div class="food-controls">
-                        <button class="btn-sm btn-outline">Edit</button>
+                        <button class="btn-sm btn-outline edit-btn">Edit</button>
                         <button class="btn-sm btn-outline">Pause</button>
                         <button class="btn-sm btn-outline delete-listing">Delete</button>
                     </div>
@@ -472,7 +481,7 @@
                     <div class="food-price">$6.99 <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$10.99</span></div>
                     <p class="food-description">Bundle of locally sourced vegetables. Great for cooking healthy meals.</p>
                     <div class="food-controls">
-                        <button class="btn-sm btn-outline">Edit</button>
+                        <button class="btn-sm btn-outline edit-btn">Edit</button>
                         <button class="btn-sm btn-outline">Pause</button>
                         <button class="btn-sm btn-outline delete-listing">Delete</button>
                     </div>
@@ -490,7 +499,7 @@
                     <div class="food-price">$5.50 <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$8.99</span></div>
                     <p class="food-description">Complete lunch pack with sandwich, fruit, and cookie. Perfect for students.</p>
                     <div class="food-controls">
-                        <button class="btn-sm btn-outline">Edit</button>
+                        <button class="btn-sm btn-outline edit-btn">Edit</button>
                         <button class="btn-sm btn-outline">Pause</button>
                         <button class="btn-sm btn-outline delete-listing">Delete</button>
                     </div>
@@ -539,6 +548,34 @@
                     <p class="hint">Image will be replaced with a placeholder for this demo</p>
                 </div>
                 <button type="submit" class="btn">Add Listing</button>
+            </form>
+        </div>
+    </div>
+    <!-- Edit Listing Modal -->
+    <div id="edit-listing-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Food Listing</h2>
+                <span class="close-modal" id="close-edit-modal">&times;</span>
+            </div>
+            <form id="edit-listing-form">
+                <div class="input-group">
+                    <label for="edit-food-name">Food Name</label>
+                    <input type="text" id="edit-food-name" name="edit-food-name" required>
+                </div>
+                <div class="input-group">
+                    <label for="edit-food-price">Price ($)</label>
+                    <input type="number" id="edit-food-price" name="edit-food-price" step="0.01" required>
+                </div>
+                <div class="input-group">
+                    <label for="edit-food-original-price">Original Price ($)</label>
+                    <input type="number" id="edit-food-original-price" name="edit-food-original-price" step="0.01" required>
+                </div>
+                <div class="input-group">
+                    <label for="edit-food-description">Description</label>
+                    <textarea id="edit-food-description" name="edit-food-description" required></textarea>
+                </div>
+                <button type="submit" class="btn">Save Changes</button>
             </form>
         </div>
     </div>

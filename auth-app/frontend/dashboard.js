@@ -1,100 +1,186 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Check if user is logged in
+document.addEventListener('DOMContentLoaded', function () {
     const user = JSON.parse(localStorage.getItem('currentUser'));
-    
+
     if (!user) {
-        // If not logged in, redirect to login page
         window.location.href = 'login.html';
         return;
     }
-    
+
     console.log("Current user:", user);
-    
-    // Update user information display
+
     const usernameDisplay = document.getElementById('username-display');
     const vendorNameDisplay = document.getElementById('vendor-name-display');
-    
-    if (usernameDisplay) {
-        usernameDisplay.textContent = user.username;
-    }
-    
-    if (vendorNameDisplay) {
-        vendorNameDisplay.textContent = user.username;
-    }
-    
-    // Show the appropriate dashboard based on user type
+
+    if (usernameDisplay) usernameDisplay.textContent = user.username;
+    if (vendorNameDisplay) vendorNameDisplay.textContent = user.username;
+
     const customerDashboard = document.getElementById('customer-dashboard');
     const vendorDashboard = document.getElementById('vendor-dashboard');
-    
+
     if (user.userType === 'vendor') {
         console.log("Showing vendor dashboard");
         customerDashboard.style.display = 'none';
         vendorDashboard.style.display = 'block';
-        
-        // Initialize vendor-specific data and functionality
-        initVendorDashboard();
+        if (typeof initVendorDashboard === 'function') initVendorDashboard();
     } else {
         console.log("Showing customer dashboard");
         customerDashboard.style.display = 'block';
         vendorDashboard.style.display = 'none';
     }
-    
-    // Handle logout
+
     const logoutBtn = document.getElementById('logout-btn');
-    
     if (logoutBtn) {
-        logoutBtn.addEventListener('click', function(e) {
+        logoutBtn.addEventListener('click', function (e) {
             e.preventDefault();
-            
-            // Clear current user
             localStorage.removeItem('currentUser');
-            
-            // Redirect to login page
             window.location.href = 'login.html';
         });
     }
-    
-    // Filter buttons functionality
+
     const filterButtons = document.querySelectorAll('.filter-btn');
-    
     filterButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Remove active class from all buttons
+        button.addEventListener('click', function () {
             filterButtons.forEach(btn => btn.classList.remove('active'));
-            
-            // Add active class to clicked button
             this.classList.add('active');
-            
-            // In a real app, you would filter the food items here
-            const filterValue = this.textContent.toLowerCase();
-            console.log(`Filtering by: ${filterValue}`);
-            
-            // For now, we'll just log the filter value
-            // In a real implementation, you would filter the items displayed
+            console.log(`Filtering by: ${this.textContent.toLowerCase()}`);
         });
     });
-    
-    // Add new listing button (for vendors)
+
+    // Add Listing Modal
     const addListingBtn = document.getElementById('add-listing-btn');
-    
-    if (addListingBtn) {
-        addListingBtn.addEventListener('click', function() {
-            // In a real app, this would open a modal or navigate to a form
-            alert('This would open a form to add a new food listing.');
+    const addModal = document.getElementById('add-listing-modal');
+    const closeAddModalBtn = document.getElementById('close-modal');
+    const addListingForm = document.getElementById('add-listing-form');
+    const listingsGrid = document.querySelector('.vendor-listings');
+  
+
+    if (addListingBtn && addModal) {
+        addListingBtn.addEventListener('click', () => {
+            addModal.style.display = 'block';
         });
     }
-    
-    // Handle food item actions (for customers)
+
+    if (closeAddModalBtn && addModal) {
+        closeAddModalBtn.addEventListener('click', () => {
+            addModal.style.display = 'none';
+        });
+    }
+
+    window.addEventListener('click', (e) => {
+        if (e.target === addModal) addModal.style.display = 'none';
+        if (e.target === editModal) editModal.style.display = 'none';
+    });
+
+    if (addListingForm && listingsGrid) {
+        addListingForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('food-name').value;
+            const price = parseFloat(document.getElementById('food-price').value).toFixed(2);
+            const originalPrice = parseFloat(document.getElementById('food-original-price').value).toFixed(2);
+            const description = document.getElementById('food-description').value;
+            const category = document.getElementById('food-category').value;
+
+            const card = document.createElement('div');
+            card.className = 'food-item';
+            card.innerHTML = `
+                <img src="/api/placeholder/300/200" alt="Food listing" class="food-img">
+                <div class="food-info">
+                    <div class="food-tags">
+                        <span class="food-tag">${category}</span>
+                    </div>
+                    <h3 class="food-title">${name}</h3>
+                    <div class="food-price">$${price} <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$${originalPrice}</span></div>
+                    <p class="food-description">${description}</p>
+                    <div class="food-controls">
+                        <button class="btn-sm btn-outline edit-btn">Edit</button>
+                        <button class="btn-sm btn-outline">Pause</button>
+                        <button class="btn-sm btn-outline delete-listing">Delete</button>
+                    </div>
+                </div>`;
+
+            listingsGrid.appendChild(card);
+            addListingForm.reset();
+            addModal.style.display = 'none';
+            attachEditEvent(card.querySelector('.edit-btn')); // Attach edit event to the new card
+            attachDeleteEvent(card.querySelector('.delete-listing'));
+        });
+    }
+
+    // Add to Cart
     const addToCartButtons = document.querySelectorAll('#customer-dashboard .btn');
-    
     addToCartButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Get the food item details
+        button.addEventListener('click', function () {
             const foodItem = this.closest('.food-item');
             const foodTitle = foodItem.querySelector('.food-title').textContent;
-            
-            // In a real app, you would add the item to a cart
             alert(`Added "${foodTitle}" to your cart!`);
         });
     });
+
+    const editModal = document.getElementById('edit-listing-modal');
+    const closeEditModalBtn = document.getElementById('close-edit-modal');
+    const editForm = document.getElementById('edit-listing-form');
+
+    let currentEditItem = null; // To keep track of which item is being edited
+
+    function attachEditEvent(button) {
+        button.addEventListener('click', function () {
+            currentEditItem = this.closest('.food-item');
+
+            // Populate modal fields with current values
+            const title = currentEditItem.querySelector('.food-title').textContent;
+            const price = parseFloat(currentEditItem.querySelector('.food-price').childNodes[0].textContent.replace('$', ''));
+            const originalPrice = parseFloat(currentEditItem.querySelector('.food-price span').textContent.replace('$', ''));
+            const description = currentEditItem.querySelector('.food-description').textContent;
+
+            document.getElementById('edit-food-name').value = title;
+            document.getElementById('edit-food-price').value = price;
+            document.getElementById('edit-food-original-price').value = originalPrice;
+            document.getElementById('edit-food-description').value = description;
+
+            // Show modal
+            editModal.style.display = 'block';
+        });
+    }
+
+    function attachDeleteEvent(button) {
+        button.addEventListener('click', function () {
+            const foodItem = this.closest('.food-item');
+            foodItem.remove();
+        });
+    }
+
+    // Attach edit/delete events to initial listings
+    document.querySelectorAll('.edit-btn').forEach(attachEditEvent);
+    document.querySelectorAll('.delete-listing').forEach(attachDeleteEvent);
+
+    if (closeEditModalBtn && editModal) {
+        closeEditModalBtn.addEventListener('click', () => {
+            editModal.style.display = 'none';
+        });
+    }
+
+    if (editForm) {
+        editForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (!currentEditItem) return;
+
+            // Get updated values
+            const newName = document.getElementById('edit-food-name').value;
+            const newPrice = parseFloat(document.getElementById('edit-food-price').value).toFixed(2);
+            const newOriginalPrice = parseFloat(document.getElementById('edit-food-original-price').value).toFixed(2);
+            const newDescription = document.getElementById('edit-food-description').value;
+
+            // Update card content
+            currentEditItem.querySelector('.food-title').textContent = newName;
+            currentEditItem.querySelector('.food-price').innerHTML = `$${newPrice} <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$${newOriginalPrice}</span>`;
+            currentEditItem.querySelector('.food-description').textContent = newDescription;
+
+            // Hide modal
+            editModal.style.display = 'none';
+            currentEditItem = null;
+        });
+    }
+
 });
+
