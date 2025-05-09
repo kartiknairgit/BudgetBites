@@ -161,6 +161,51 @@
             margin: 0;
             font-weight: 500;
         }
+        .food-item.paused {
+            opacity: 0.5;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .food-item.paused .food-controls {
+            pointer-events: auto; /* So the Unpause button is still clickable */
+        }
+        .revenue-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            height: 200px;
+            position: relative;
+        }
+
+        .chart-bar {
+            width: 30px;
+            background-color: #4CAF50;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .chart-bar:hover {
+            background-color: #388E3C;
+        }
+
+        .tooltip {
+            position: absolute;
+            background-color: #333;
+            color: #fff;
+            padding: 4px 8px;
+            font-size: 12px;
+            border-radius: 4px;
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 10;
+            transform: translate(-50%, -100%);
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+        }
+
+
+
     </style>
 </head>
 <body>
@@ -381,14 +426,14 @@
             <div class="revenue-chart-container">
                 <h3>Weekly Revenue</h3>
                 <div id="revenue-chart" class="revenue-chart">
-                <!-- Mock Data: Weekly revenue chart bars -->
-                <div class="chart-bar" style="height: 80%;"></div>
-                <div class="chart-bar" style="height: 65%;"></div>
-                <div class="chart-bar" style="height: 90%;"></div>
-                <div class="chart-bar" style="height: 70%;"></div>
-                <div class="chart-bar" style="height: 55%;"></div>
-                <div class="chart-bar" style="height: 60%;"></div>
-                <div class="chart-bar" style="height: 85%;"></div>
+                <!-- Mock Data: Weekly revenue chart bars  -->
+                <div class="chart-bar" style="height: 80%;" data-revenue="$800"></div>
+                <div class="chart-bar" style="height: 65%;" data-revenue="$650"></div>
+                <div class="chart-bar" style="height: 90%;" data-revenue="$900"></div>
+                <div class="chart-bar" style="height: 70%;" data-revenue="$700"></div>
+                <div class="chart-bar" style="height: 55%;" data-revenue="$550"></div>
+                <div class="chart-bar" style="height: 60%;" data-revenue="$600"></div>
+                <div class="chart-bar" style="height: 85%;" data-revenue="$850"></div>
                 <!-- Chart bars will be inserted here via JS -->
                 </div>
 

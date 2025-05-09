@@ -181,6 +181,39 @@ document.addEventListener('DOMContentLoaded', function () {
             currentEditItem = null;
         });
     }
+    // Pause/Unpause functionality
+    document.querySelectorAll('.vendor-listings .food-item').forEach(item => {
+        const pauseBtn = item.querySelector('.food-controls button:nth-child(2)');    
+        pauseBtn.addEventListener('click', function () {
+            item.classList.toggle('paused');
+            if (item.classList.contains('paused')) {
+                pauseBtn.textContent = 'Unpause';
+            } else {
+                pauseBtn.textContent = 'Pause';
+            }
+        });
+    });
+    const bars = document.querySelectorAll(".chart-bar");
 
+    bars.forEach(bar => {
+        const tooltip = document.createElement("div");
+        tooltip.classList.add("tooltip");
+        tooltip.textContent = bar.getAttribute("data-revenue");
+        bar.appendChild(tooltip);
+
+        bar.addEventListener("mouseenter", () => {
+            tooltip.style.opacity = 1;
+        });
+
+        bar.addEventListener("mousemove", (e) => {
+            tooltip.style.left = e.offsetX + "px";
+            tooltip.style.top = e.offsetY - 10 + "px";
+        });
+
+        bar.addEventListener("mouseleave", () => {
+            tooltip.style.opacity = 0;
+        });
+    });
+    
 });
 
