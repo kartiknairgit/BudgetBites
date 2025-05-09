@@ -204,8 +204,6 @@
             transition: opacity 0.2s ease-in-out;
         }
 
-
-
     </style>
 </head>
 <body>
@@ -218,6 +216,7 @@
                 <li><a href="#">My Orders</a></li>
                 <li><a href="#">My Account</a></li>
                 <li><a href="#" id="logout-btn">Logout</a></li>
+                <li><a href="#" id="cart-btn">Cart (<span id="cart-count">0</span>)</a></li>
             </ul>
         </div>
     </header>
@@ -624,6 +623,65 @@
             </form>
         </div>
     </div>
+    
+    <!-- Cart Modal -->
+    <div id="cart-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
+    <div style="background:white; padding:20px; border-radius:10px; width:90%; max-width:400px;">
+        <h3>Your Cart</h3>
+        <ul id="cart-items"></ul>
+        <p><strong>Total: $<span id="cart-total">0.00</span></strong></p>
+        <button id="proceed-btn">Proceed to Payment</button>
+        <button id="close-cart-btn">Close</button>
+    </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkout-form" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:1001 ; justify-content:center; align-items:center;">
+    <div style="background:white; padding:20px; border-radius:10px; width:90%; max-width:400px;">
+        <h3>Payment</h3>
+        <!-- … -->
+        <button id="submit-btn">Submit</button>
+        <button id="cancel-btn">Cancel</button>
+    </div>
+    </div>
+
+    <!-- Order Success -->
+    <div id="order-success" style="display:none; position:fixed; /* … */">
+    ✅ Order Placed!
+    </div>
+
+
+
+
+
+    <!-- <div id="cart-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
+        <div style="background:white; padding:20px; border-radius:10px; width:90%; max-width:400px;">
+            <h3>Your Cart</h3>
+            <ul id="cart-items"></ul>
+            <p><strong>Total: $<span id="cart-total">0.00</span></strong></p>
+            <button onclick="showCheckout()">Proceed to Payment</button>
+            <button onclick="closeCart()">Close</button>
+        </div>
+    </div>
+
+    <div id="checkout-form" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:1001; justify-content:center; align-items:center;">
+        <div style="background:white; padding:20px; border-radius:10px; width:90%; max-width:400px;">
+            <h3>Payment</h3>
+            <label>Name on Card:</label><br>
+            <input type="text" id="name" style="width:100%; margin-bottom:10px;"><br>
+            <label>Card Number:</label><br>
+            <input type="text" id="card" style="width:100%; margin-bottom:10px;"><br>
+            <button onclick="submitOrder()">Submit</button>
+            <button onclick="closeCheckout()">Cancel</button>
+        </div>
+    </div>
+
+    <div id="order-success" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,255,0,0.1); z-index:1002; justify-content:center; align-items:center; font-size:2rem;">
+        ✅ Order Placed!
+    </div> -->
+
+
+
 
     <script src="dashboard.js"></script>
 </body>

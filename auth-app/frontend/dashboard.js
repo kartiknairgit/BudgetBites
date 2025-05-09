@@ -215,5 +215,100 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
     
+
+    let cart = [];
+
+    document.querySelectorAll('.btn').forEach((btn, idx) => {
+        btn.addEventListener('click', () => {
+            const foodItem = btn.closest('.food-item');
+            const title = foodItem.querySelector('.food-title').innerText;
+            const priceText = foodItem.querySelector('.food-price').innerText;
+            const price = parseFloat(priceText.replace('$', ''));
+
+            cart.push({ title, price });
+            updateCartDisplay();
+        });
+    });
+    // Open cart
+    document.getElementById('cart-btn').addEventListener('click', () => {
+        document.getElementById('cart-modal').style.display = 'flex';
+        updateCartDisplay();
+    });
+
+    // Modal buttons
+    document.getElementById('close-cart-btn').addEventListener('click', () => {
+        document.getElementById('cart-modal').style.display = 'none';
+    });
+    document.getElementById('proceed-btn').addEventListener('click', () => {
+        document.getElementById('cart-modal').style.display = 'none';
+        document.getElementById('checkout-form').style.display = 'flex';
+    });
+    document.getElementById('cancel-btn').addEventListener('click', () => {
+        document.getElementById('checkout-form').style.display = 'none';
+    });
+
+    // Submit order
+    document.getElementById('submit-btn').addEventListener('click', () => {
+        const name = document.getElementById('name').value;
+        const card = document.getElementById('card').value;
+        if (!name || !card) {
+        return alert('Please fill in payment details.');
+        }
+        document.getElementById('checkout-form').style.display = 'none';
+        document.getElementById('order-success').style.display = 'flex';
+        cart = [];
+        updateCartDisplay();
+        setTimeout(() => {
+        document.getElementById('order-success').style.display = 'none';
+        }, 3000);
+    });
+
+    function updateCartDisplay() {
+        document.getElementById('cart-count').innerText = cart.length;
+        
+        const cartItemsList = document.getElementById('cart-items');
+        cartItemsList.innerHTML = '';
+        
+        let total = 0;
+        cart.forEach(item => {
+            const li = document.createElement('li');
+            li.innerText = `${item.title} - $${item.price.toFixed(2)}`;
+            cartItemsList.appendChild(li);
+            total += item.price;
+        });
+        
+        document.getElementById('cart-total').innerText = total.toFixed(2);
+    }
+
+    // function closeCart() {
+    //     document.getElementById('cart-modal').style.display = 'none';
+    // }
+
+    // function showCheckout() {
+    //     closeCart();
+    //     document.getElementById('checkout-form').style.display = 'flex';
+    // }
+
+    // function closeCheckout() {
+    //     document.getElementById('checkout-form').style.display = 'none';
+    // }
+
+    // function submitOrder() {
+    //     const name = document.getElementById('name').value;
+    //     const card = document.getElementById('card').value;
+        
+    //     if (name && card) {
+    //         document.getElementById('checkout-form').style.display = 'none';
+    //         document.getElementById('order-success').style.display = 'flex';
+    //         cart = [];
+    //         updateCartDisplay();
+    //         setTimeout(() => {
+    //             document.getElementById('order-success').style.display = 'none';
+    //         }, 3000);
+    //     } else {
+    //         alert('Please fill in payment details.');
+    //     }
+    // }
+    
 });
 
