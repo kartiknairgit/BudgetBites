@@ -327,6 +327,125 @@ document.addEventListener('DOMContentLoaded', function () {
         item.style.display = (checked.length === 0 || matches) ? "" : "none";
     });
     });
+    // Help Chat System
+    const helpChatButton = document.getElementById('help-chat-button');
+    const helpChatPanel = document.getElementById('help-chat-panel');
+    const closeChat = document.getElementById('close-chat');
+    const chatInput = document.getElementById('chat-input');
+    const sendChat = document.getElementById('send-chat');
+    const chatMessages = document.getElementById('chat-messages');
+    const quickQuestions = document.querySelectorAll('.quick-question');
+
+    // Common responses for frequently asked questions
+    const helpResponses = {
+        'filter': 'To filter products, select the checkboxes for categories like "Meals", "Groceries", or price ranges like "Under $5". Then click the "Apply Filters" button to show only matching items.',
+        'checkout': 'To checkout, add items to your cart by clicking the "Add to Cart" button on products. Then click the cart icon in the navigation, review your order, and click "Proceed to Payment".',
+        'payment': 'We accept all major credit cards. Your payment information is securely processed.',
+        'return': 'For food quality issues, please contact the vendor directly through the vendor profile page. Refunds are processed within 24-48 hours.',
+        'account': 'You can manage your account by clicking on "My Account" in the navigation menu. There you can update your profile, change your password, and view your order history.',
+        'delivery': 'Delivery times vary by vendor. Estimated delivery times are shown during checkout before you confirm your order.',
+        'help': 'I\'m here to help! Ask me any questions about using BudgetBites, and I\'ll do my best to assist you.',
+        'default': 'I\'m not sure I understand. Could you try rephrasing your question? Or you can try one of the common questions below.'
+    };
+
+    // Toggle chat panel
+    helpChatButton.addEventListener('click', () => {
+        helpChatPanel.classList.toggle('active');
+        helpChatButton.classList.remove('pulse'); // Remove pulse once clicked
+    });
+
+    closeChat.addEventListener('click', () => {
+        helpChatPanel.classList.remove('active');
+    });
+
+    // Send message function
+    function sendMessage() {
+        const message = chatInput.value.trim();
+        if (message === '') return;
+
+        // Add user message
+        addMessage(message, 'user');
+        chatInput.value = '';
+
+        // Process and respond
+        setTimeout(() => {
+            respondToMessage(message);
+        }, 500);
+    }
+
+    // Send on button click
+    sendChat.addEventListener('click', sendMessage);
+
+    // Send on Enter key
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+    // Handle quick questions
+    quickQuestions.forEach(question => {
+        question.addEventListener('click', () => {
+            const questionText = question.textContent;
+            addMessage(questionText, 'user');
+            
+            setTimeout(() => {
+                respondToMessage(questionText);
+            }, 500);
+        });
+    });
+
+    // Add message to chat
+    function addMessage(text, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${sender}`;
+
+        const avatar = document.createElement('div');
+        avatar.className = 'avatar';
+        avatar.textContent = sender === 'user' ? 'You' : 'BB';
+
+        const messageContent = document.createElement('div');
+        messageContent.className = 'message-content';
+        messageContent.textContent = text;
+
+        messageDiv.appendChild(avatar);
+        messageDiv.appendChild(messageContent);
+        chatMessages.appendChild(messageDiv);
+
+        // Auto scroll to bottom
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Generate response based on message content
+    function respondToMessage(message) {
+        const lowerMessage = message.toLowerCase();
+        let response = helpResponses.default;
+
+        // Check for keywords in the message
+        if (lowerMessage.includes('filter') || lowerMessage.includes('find') || lowerMessage.includes('search')) {
+            response = helpResponses.filter;
+        } else if (lowerMessage.includes('checkout') || lowerMessage.includes('buy') || lowerMessage.includes('purchase')) {
+            response = helpResponses.checkout;
+        } else if (lowerMessage.includes('payment') || lowerMessage.includes('pay') || lowerMessage.includes('card')) {
+            response = helpResponses.payment;
+        } else if (lowerMessage.includes('return') || lowerMessage.includes('refund') || lowerMessage.includes('money back')) {
+            response = helpResponses.return;
+        } else if (lowerMessage.includes('account') || lowerMessage.includes('profile') || lowerMessage.includes('password')) {
+            response = helpResponses.account;
+        } else if (lowerMessage.includes('delivery') || lowerMessage.includes('shipping') || lowerMessage.includes('arrive')) {
+            response = helpResponses.delivery;
+        } else if (lowerMessage.includes('help') || lowerMessage.includes('support') || lowerMessage.includes('assistance')) {
+            response = helpResponses.help;
+        } else if (lowerMessage.includes('how do i filter')) {
+            response = helpResponses.filter;
+        } else if (lowerMessage.includes('how does checkout work')) {
+            response = helpResponses.checkout;
+        } else if (lowerMessage.includes('return policy')) {
+            response = helpResponses.return;
+        }
+
+        addMessage(response, 'assistant');
+    }
 
 
 });

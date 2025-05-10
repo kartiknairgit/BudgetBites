@@ -706,5 +706,37 @@
     </div> 
 
     <script src="dashboard.js"></script>
+
+    <!-- Help Chat System -->
+    <div id="help-chat-container">
+        <button id="help-chat-button" class="pulse">
+            <span class="help-icon">?</span>
+            <span class="help-text">Help</span>
+        </button>
+        <div id="help-chat-panel">
+            <div class="chat-header">
+                <h3>BudgetBites Support</h3>
+                <button id="close-chat">&times;</button>
+            </div>
+            <div id="chat-messages">
+                <div class="message assistant">
+                    <div class="avatar">BB</div>
+                    <div class="message-content">
+                        Hi there! How can I help you with BudgetBites today?
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input-container">
+                <input type="text" id="chat-input" placeholder="Type your question here...">
+                <button id="send-chat">Send</button>
+            </div>
+            <div class="quick-questions">
+                <p>Common questions:</p>
+                <button class="quick-question">How do I filter products?</button>
+                <button class="quick-question">How does checkout work?</button>
+                <button class="quick-question">Return policy?</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
