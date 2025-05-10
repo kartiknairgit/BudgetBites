@@ -640,15 +640,20 @@
     <div style="background:white; padding:20px; border-radius:10px; width:90%; max-width:400px;">
         <h3>Payment</h3>
         <!-- … -->
+        <label for="name">Name on Card</label>
+        <input type="text" id="name" placeholder="John Doe" style="width:100%; margin-bottom:10px;" />
+
+        <label for="card">Card Number</label>
+        <input type="text" id="card" placeholder="1234 5678 9012 3456" style="width:100%; margin-bottom:10px;" />
+
         <button id="submit-btn">Submit</button>
         <button id="cancel-btn">Cancel</button>
     </div>
     </div>
-
-    <!-- Order Success -->
-    <div id="order-success" style="display:none; position:fixed; /* … */">
-    ✅ Order Placed!
-    </div>
+    
+    <div id="order-success" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,255,0,0.1); z-index:1002; justify-content:center; align-items:center; font-size:2rem;">
+        ✅ Order Placed!
+    </div> 
 
 
 
