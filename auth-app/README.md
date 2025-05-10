@@ -1,63 +1,97 @@
-# Budget Bites
+# BudgetBites
 
-A food retail platform for students and low-income households to find affordable food options.
+A web application for budget-friendly meal planning and tracking with user authentication.
 
-## How to Run the App
+## Project Structure
 
-1. Navigate to the `frontend` directory
-2. Run a simple HTTP server:
-   ```
-   python3 -m http.server
-   ```
-3. Open your browser and go to: `http://localhost:8000`
+```
+BudgetBites/auth-app/
+├── backend/
+│   ├── node_modules/
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── server.js
+│   └── users.json
+├── frontend/
+│   ├── app.js
+│   ├── auth.js
+│   ├── dashboard.html
+│   ├── dashboard.js
+│   ├── index.html
+│   ├── login.html
+│   ├── login.js
+│   ├── register.html
+│   ├── register.js
+│   └── style.css
+└── README.md
+```
 
-## Demo Credentials
+## Description
 
-For quick access, you can use these demo credentials:
-
-**Customer Account:**
-- Email: demo@example.com
-- Password: password
-
-**Vendor Account:**
-- Email: vendor@example.com
-- Password: password
+BudgetBites is a web application designed to help users manage their meal planning within a budget. The application features user authentication (registration, login) and a personalized dashboard.
 
 ## Features
 
-- Welcome page with animated text
-- User authentication (login/registration)
-- Customer dashboard to browse food items
-- Vendor dashboard to manage food listings
-  - View analytics and orders
-  - Add, edit, and delete food items
-  - Notification system
-- Responsive design for all screen sizes
+- User registration and authentication
+- Secure login system
+- Personalized dashboard
+- Budget tracking for meals
+- Responsive design
 
-## Vendor Dashboard Features
+## Technologies Used
 
-As a vendor, you can:
-- View your active listings, order statistics, and revenue data
-- See a weekly revenue chart
-- Track recent orders
-- Add new food listings through a modal form
-- Manage existing listings (edit, pause, delete)
-- Receive notifications for new orders and reviews
+- **Frontend**: HTML, CSS, JavaScript
+- **Backend**: Node.js
+- **Data Storage**: JSON files (users.json)
 
-## Technology
+## Installation and Setup
 
-- HTML/CSS/JavaScript for frontend
-- Client-side storage (localStorage) for user data
+1. Clone the repository:
+   ```
+   git clone https://github.com/kartiknairgit/BudgetBites.git
+   cd BudgetBites/auth-app
+   ```
 
-## File Structure
+2. Install backend dependencies:
+   ```
+   cd backend
+   npm install
+   ```
 
-- `index.html` - Welcome page with animation
-- `login.html` - User login page
-- `register.html` - User registration page
-- `dashboard.html` - Main application dashboard
-- `style.css` - Global styles
-- Various JavaScript files for functionality
+3. Start the server:
+   ```
+   node server.js
+   ```
 
-## Notes
+4. Access the application:
+   Open `frontend/index.html` in your web browser
 
-This is a simplified version that works without a backend server. In a production environment, you would need to implement proper server-side authentication and data storage.
+## Usage
+
+1. **Registration**: Create a new account through the registration page
+2. **Login**: Access your account using your credentials
+3. **Dashboard**: View and manage your meal budget planning
+
+## API Endpoints
+
+- `POST /api/register` - Register a new user
+- `POST /api/login` - Authenticate a user
+- `GET /api/user/:id` - Get user information
+
+## Development
+
+To contribute to this project:
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/your-feature-name`
+3. Commit your changes: `git commit -m 'Add some feature'`
+4. Push to the branch: `git push origin feature/your-feature-name`
+5. Create a pull request
+
+## License
+
+[MIT License](LICENSE)
+
+## Contact
+
+- GitHub: [kartiknairgit](https://github.com/kartiknairgit)
