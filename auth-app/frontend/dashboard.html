@@ -249,8 +249,19 @@
                 <div class="stat-label">Average Savings</div>
             </div>
         </div>
-
-
+        <!-- Friends Section -->
+        <div class="friends-container">
+            <h3 class="section-title">My Friends</h3>
+            <div class="friends-actions">
+                <button id="add-friend-btn" class="btn-secondary">Add Friend</button>
+                <button id="split-bill-btn" class="btn">Split Bill with Friends</button>
+            </div>
+            
+            <div class="friends-list" id="friends-list">
+                <!-- Friends will be added here dynamically -->
+                <p class="empty-friends-message">You haven't added any friends yet. Add friends to split bills!</p>
+            </div>
+        </div>
         <h3 class="section-title">Today's Deals</h3>
         
         <div class="food-filters">
@@ -735,6 +746,97 @@
                 <button class="quick-question">How do I filter products?</button>
                 <button class="quick-question">How does checkout work?</button>
                 <button class="quick-question">Return policy?</button>
+            </div>
+        </div>
+    </div>
+    <!-- Add Friend Modal -->
+    <div id="add-friend-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Friend</h2>
+                <span id="close-friend-modal" class="close-modal">&times;</span>
+            </div>
+            <form id="add-friend-form">
+                <div class="input-group">
+                    <label for="friend-email">Friend's Email</label>
+                    <input type="email" id="friend-email" name="friend-email" required>
+                </div>
+                <p class="hint">Your friend will receive an invitation to connect.</p>
+                <button type="submit" class="btn">Send Invitation</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Split Bill Modal -->
+    <div id="split-bill-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Split Bill with Friends</h2>
+                <span id="close-split-modal" class="close-modal">&times;</span>
+            </div>
+            <div id="split-bill-content">
+                <div class="cart-summary">
+                    <h3>Your Cart</h3>
+                    <ul id="split-cart-items"></ul>
+                    <p><strong>Total: $<span id="split-cart-total">0.00</span></strong></p>
+                </div>
+                
+                <div class="split-options">
+                    <h3>Split Options</h3>
+                    <div class="input-group">
+                        <label>Select friends to split with:</label>
+                        <div id="split-friends-list" class="split-friends-list">
+                            <!-- Friends checkboxes will be added here -->
+                        </div>
+                    </div>
+                    
+                    <div class="split-summary">
+                        <p>Splitting among <span id="split-count">1</span> people</p>
+                        <p>Each person pays: $<span id="split-amount">0.00</span></p>
+                        <p class="discount-note">🎉 Group order discount: <span id="discount-amount">0%</span></p>
+                    </div>
+                    
+                    <button id="send-split-request" class="btn">Send Split Requests</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Friend Request Notification Modal -->
+    <div id="friend-notification-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>New Friend Request</h2>
+                <span id="close-notification-modal" class="close-modal">&times;</span>
+            </div>
+            <div class="notification-content">
+                <p id="friend-request-message"></p>
+                <div class="notification-actions">
+                    <button id="accept-friend" class="btn">Accept</button>
+                    <button id="decline-friend" class="btn-outline">Decline</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Split Request Notification Modal -->
+    <div id="split-notification-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Split Bill Request</h2>
+                <span id="close-split-notification-modal" class="close-modal">&times;</span>
+            </div>
+            <div class="notification-content">
+                <p id="split-request-message"></p>
+                <div class="split-details">
+                    <h4>Items:</h4>
+                    <ul id="split-request-items"></ul>
+                    <p><strong>Your Share: $<span id="split-request-amount">0.00</span></strong></p>
+                </div>
+                <div class="notification-actions">
+                    <button id="accept-split" class="btn">Accept & Pay</button>
+                    <button id="decline-split" class="btn-outline">Decline</button>
+                </div>
             </div>
         </div>
     </div>

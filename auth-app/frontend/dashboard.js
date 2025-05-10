@@ -446,7 +446,418 @@ document.addEventListener('DOMContentLoaded', function () {
 
         addMessage(response, 'assistant');
     }
+        // Friends and Split Bill Feature
+    let friends = [];
+    let pendingFriendRequests = [];
+    let pendingSplitRequests = [];
 
+    // Mock data for demo purposes
+    function initializeFriendSystem() {
+        // Check if we have friends in local storage
+        const storedFriends = localStorage.getItem('budgetBitesFriends');
+        if (storedFriends) {
+            friends = JSON.parse(storedFriends);
+        } else {
+            // Add some demo friends
+            friends = [
+                { id: 1, name: 'Alex Johnson', email: 'alex@example.com', avatar: 'AJ' },
+                { id: 2, name: 'Morgan Smith', email: 'morgan@example.com', avatar: 'MS' }
+            ];
+            // Save to local storage
+            localStorage.setItem('budgetBitesFriends', JSON.stringify(friends));
+        }
 
+        // Render friends
+        renderFriends();
+
+        // Simulate pending requests randomly for demo purposes
+        setTimeout(() => {
+            const randomRequest = Math.random() > 0.5;
+            if (randomRequest) {
+                pendingFriendRequests.push({
+                    id: Date.now(),
+                    name: 'Jordan Lee',
+                    email: 'jordan@example.com',
+                    avatar: 'JL'
+                });
+                showFriendRequestNotification();
+            }
+        }, 15000); // Show after 15 seconds for demo
+    }
+
+    // Render friends list
+    function renderFriends() {
+        const friendsList = document.getElementById('friends-list');
+        const emptyMessage = document.querySelector('.empty-friends-message');
+        
+        if (friends.length === 0) {
+            emptyMessage.style.display = 'block';
+            return;
+        }
+        
+        emptyMessage.style.display = 'none';
+        friendsList.innerHTML = '';
+        
+        friends.forEach(friend => {
+            const friendCard = document.createElement('div');
+            friendCard.className = 'friend-card';
+            friendCard.innerHTML = `
+                <div class="friend-avatar">${friend.avatar}</div>
+                <div class="friend-info">
+                    <div class="friend-name">${friend.name}</div>
+                    <div class="friend-email">${friend.email}</div>
+                    <div class="friend-actions">
+                        <button class="btn-sm share-cart" data-friend-id="${friend.id}">Share Cart</button>
+                        <button class="btn-sm btn-outline remove-friend" data-friend-id="${friend.id}">Remove</button>
+                    </div>
+                </div>
+            `;
+            friendsList.appendChild(friendCard);
+        });
+
+        // Attach event listeners to new buttons
+        document.querySelectorAll('.share-cart').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const friendId = parseInt(e.target.dataset.friendId);
+                shareCartWithFriend(friendId);
+            });
+        });
+
+        document.querySelectorAll('.remove-friend').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const friendId = parseInt(e.target.dataset.friendId);
+                removeFriend(friendId);
+            });
+        });
+    }
+
+    // Share cart with a friend
+    function shareCartWithFriend(friendId) {
+        const friend = friends.find(f => f.id === friendId);
+        if (!friend) return;
+        
+        alert(`Cart shared with ${friend.name}! They'll receive a notification.`);
+        
+        // In a real app, you would send this to your backend
+        console.log(`Shared cart with friend ID: ${friendId}`);
+    }
+
+    // Remove a friend
+    function removeFriend(friendId) {
+        if (confirm('Are you sure you want to remove this friend?')) {
+            friends = friends.filter(friend => friend.id !== friendId);
+            localStorage.setItem('budgetBitesFriends', JSON.stringify(friends));
+            renderFriends();
+        }
+    }
+
+    // Add Friend Modal Functionality
+    const addFriendBtn = document.getElementById('add-friend-btn');
+    const addFriendModal = document.getElementById('add-friend-modal');
+    const closeFriendModalBtn = document.getElementById('close-friend-modal');
+    const addFriendForm = document.getElementById('add-friend-form');
+
+    if (addFriendBtn && addFriendModal) {
+        addFriendBtn.addEventListener('click', () => {
+            addFriendModal.style.display = 'block';
+        });
+    }
+
+    if (closeFriendModalBtn) {
+        closeFriendModalBtn.addEventListener('click', () => {
+            addFriendModal.style.display = 'none';
+        });
+    }
+
+    if (addFriendForm) {
+        addFriendForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('friend-email').value;
+            
+            // Generate mock friend data (in a real app, this would send an invitation)
+            const newFriend = {
+                id: friends.length + 3, // simple ID generation for demo
+                name: email.split('@')[0], // use part of email as name for demo
+                email: email,
+                avatar: email.substring(0, 2).toUpperCase()
+            };
+            
+            // Add to friends list
+            friends.push(newFriend);
+            localStorage.setItem('budgetBitesFriends', JSON.stringify(friends));
+            
+            // Update UI
+            renderFriends();
+            addFriendModal.style.display = 'none';
+            addFriendForm.reset();
+            
+            // Show success message
+            alert(`Friend invitation sent to ${email}!`);
+        });
+    }
+
+    // Split Bill Modal Functionality
+    const splitBillBtn = document.getElementById('split-bill-btn');
+    const splitBillModal = document.getElementById('split-bill-modal');
+    const closeSplitModalBtn = document.getElementById('close-split-modal');
+    const sendSplitRequestBtn = document.getElementById('send-split-request');
+
+    if (splitBillBtn && splitBillModal) {
+        splitBillBtn.addEventListener('click', () => {
+            // Only allow splitting if there are items in cart
+            if (cart.length === 0) {
+                alert('Add items to your cart before splitting the bill.');
+                return;
+            }
+            
+            // Only allow splitting if there are friends
+            if (friends.length === 0) {
+                alert('Add friends before splitting the bill.');
+                return;
+            }
+            
+            // Display split bill modal
+            updateSplitBillModal();
+            splitBillModal.style.display = 'block';
+        });
+    }
+
+    if (closeSplitModalBtn) {
+        closeSplitModalBtn.addEventListener('click', () => {
+            splitBillModal.style.display = 'none';
+        });
+    }
+
+    // Update split bill modal content
+    function updateSplitBillModal() {
+        // Update cart items
+        const splitCartItems = document.getElementById('split-cart-items');
+        splitCartItems.innerHTML = '';
+        
+        let total = 0;
+        cart.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = `${item.title} - $${item.price.toFixed(2)}`;
+            splitCartItems.appendChild(li);
+            total += item.price;
+        });
+        
+        document.getElementById('split-cart-total').textContent = total.toFixed(2);
+        
+        // Update friends list for splitting
+        const splitFriendsList = document.getElementById('split-friends-list');
+        splitFriendsList.innerHTML = '';
+        
+        friends.forEach(friend => {
+            const friendItem = document.createElement('div');
+            friendItem.className = 'split-friend-item';
+            friendItem.innerHTML = `
+                <input type="checkbox" id="split-friend-${friend.id}" class="split-friend-checkbox" data-friend-id="${friend.id}">
+                <div class="split-friend-avatar">${friend.avatar}</div>
+                <label for="split-friend-${friend.id}">${friend.name}</label>
+            `;
+            splitFriendsList.appendChild(friendItem);
+        });
+        
+        // Attach event listeners to checkboxes
+        document.querySelectorAll('.split-friend-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', updateSplitCalculation);
+        });
+        
+        // Initialize split calculation
+        updateSplitCalculation();
+    }
+
+    // Update split calculation when checkboxes change
+    function updateSplitCalculation() {
+        const selectedFriends = document.querySelectorAll('.split-friend-checkbox:checked');
+        const splitCount = selectedFriends.length + 1; // +1 for the current user
+        
+        document.getElementById('split-count').textContent = splitCount;
+        
+        // Calculate total
+        let total = 0;
+        cart.forEach(item => {
+            total += item.price;
+        });
+        
+        // Apply discount based on group size
+        let discountPercent = 0;
+        if (splitCount >= 3) {
+            discountPercent = 10;
+        } else if (splitCount >= 2) {
+            discountPercent = 5;
+        }
+        
+        document.getElementById('discount-amount').textContent = `${discountPercent}%`;
+        
+        // Apply discount
+        if (discountPercent > 0) {
+            total = total * (1 - (discountPercent / 100));
+        }
+        
+        // Calculate per person amount
+        const perPersonAmount = total / splitCount;
+        document.getElementById('split-amount').textContent = perPersonAmount.toFixed(2);
+    }
+
+    // Send split request
+    if (sendSplitRequestBtn) {
+        sendSplitRequestBtn.addEventListener('click', () => {
+            const selectedFriends = document.querySelectorAll('.split-friend-checkbox:checked');
+            
+            if (selectedFriends.length === 0) {
+                alert('Select at least one friend to split with.');
+                return;
+            }
+            
+            // Get the split details
+            const splitCount = selectedFriends.length + 1;
+            const total = parseFloat(document.getElementById('split-cart-total').textContent);
+            const discountPercent = parseInt(document.getElementById('discount-amount').textContent);
+            const discountedTotal = discountPercent > 0 ? total * (1 - (discountPercent / 100)) : total;
+            const perPersonAmount = discountedTotal / splitCount;
+            
+            // In a real app, this would send requests to the selected friends
+            // For demo, just show a success message
+            alert(`Split requests sent to ${selectedFriends.length} friends. Each person will pay $${perPersonAmount.toFixed(2)}.`);
+            
+            // Close the modal
+            splitBillModal.style.display = 'none';
+            
+            // Simulate a pending split request after a few seconds for demo purposes
+            setTimeout(() => {
+                simulateIncomingSplitRequest();
+            }, 10000);
+        });
+    }
+
+    // Simulate an incoming split request (for demo purposes)
+    function simulateIncomingSplitRequest() {
+        const requestingFriend = friends[0]; // Use the first friend
+        const splitAmount = 14.75; // Demo amount
+        
+        pendingSplitRequests.push({
+            id: Date.now(),
+            fromFriend: requestingFriend,
+            amount: splitAmount,
+            items: [
+                { title: 'Fresh Vegetable Bundle', price: 6.99 },
+                { title: 'Day-End Bread Assortment', price: 3.25 },
+                { title: 'Student Lunch Box', price: 5.50 }
+            ]
+        });
+        
+        showSplitRequestNotification();
+    }
+
+    // Show friend request notification
+    function showFriendRequestNotification() {
+        if (pendingFriendRequests.length === 0) return;
+        
+        const request = pendingFriendRequests[0];
+        const modal = document.getElementById('friend-notification-modal');
+        const message = document.getElementById('friend-request-message');
+        
+        message.textContent = `${request.name} (${request.email}) has sent you a friend request.`;
+        modal.style.display = 'block';
+        
+        // Set up accept/decline buttons
+        document.getElementById('accept-friend').onclick = () => {
+            acceptFriendRequest(request);
+            modal.style.display = 'none';
+        };
+        
+        document.getElementById('decline-friend').onclick = () => {
+            declineFriendRequest(request);
+            modal.style.display = 'none';
+        };
+        
+        document.getElementById('close-notification-modal').onclick = () => {
+            modal.style.display = 'none';
+        };
+    }
+
+    // Show split request notification
+    function showSplitRequestNotification() {
+        if (pendingSplitRequests.length === 0) return;
+        
+        const request = pendingSplitRequests[0];
+        const modal = document.getElementById('split-notification-modal');
+        const message = document.getElementById('split-request-message');
+        const items = document.getElementById('split-request-items');
+        const amount = document.getElementById('split-request-amount');
+        
+        message.textContent = `${request.fromFriend.name} has sent you a split bill request.`;
+        items.innerHTML = '';
+        
+        request.items.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = `${item.title} - $${item.price.toFixed(2)}`;
+            items.appendChild(li);
+        });
+        
+        amount.textContent = request.amount.toFixed(2);
+        modal.style.display = 'block';
+        
+        // Set up accept/decline buttons
+        document.getElementById('accept-split').onclick = () => {
+            acceptSplitRequest(request);
+            modal.style.display = 'none';
+        };
+        
+        document.getElementById('decline-split').onclick = () => {
+            declineSplitRequest(request);
+            modal.style.display = 'none';
+        };
+        
+        document.getElementById('close-split-notification-modal').onclick = () => {
+            modal.style.display = 'none';
+        };
+    }
+
+    // Accept friend request
+    function acceptFriendRequest(request) {
+        friends.push({
+            id: request.id,
+            name: request.name,
+            email: request.email,
+            avatar: request.avatar
+        });
+        
+        localStorage.setItem('budgetBitesFriends', JSON.stringify(friends));
+        renderFriends();
+        
+        pendingFriendRequests = pendingFriendRequests.filter(req => req.id !== request.id);
+        alert(`You are now friends with ${request.name}!`);
+    }
+
+    // Decline friend request
+    function declineFriendRequest(request) {
+        pendingFriendRequests = pendingFriendRequests.filter(req => req.id !== request.id);
+        alert(`Friend request from ${request.name} declined.`);
+    }
+
+    // Accept split request
+    function acceptSplitRequest(request) {
+        pendingSplitRequests = pendingSplitRequests.filter(req => req.id !== request.id);
+        alert(`You've paid your share of $${request.amount.toFixed(2)}!`);
+        
+        // Show success message
+        document.getElementById('order-success').style.display = 'flex';
+        setTimeout(() => {
+            document.getElementById('order-success').style.display = 'none';
+        }, 3000);
+    }
+
+    // Decline split request
+    function declineSplitRequest(request) {
+        pendingSplitRequests = pendingSplitRequests.filter(req => req.id !== request.id);
+        alert(`Split request from ${request.fromFriend.name} declined.`);
+    }
+
+    // Initialize the friend system when the page loads
+    initializeFriendSystem();
 });
 
