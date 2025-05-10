@@ -243,16 +243,25 @@
             </div>
         </div>
 
+
         <h3 class="section-title">Today's Deals</h3>
         
         <div class="food-filters">
-            <button class="filter-btn active">All</button>
-            <button class="filter-btn">Meals</button>
-            <button class="filter-btn">Groceries</button>
-            <button class="filter-btn">Bakery</button>
-            <button class="filter-btn">Produce</button>
-            <button class="filter-btn">Under $5</button>
+            <label><input type="checkbox" class="filter-checkbox" value="Meal"> Meals</label>
+            <label><input type="checkbox" class="filter-checkbox" value="Groceries"> Groceries</label>
+            <label><input type="checkbox" class="filter-checkbox" value="Bakery"> Bakery</label>
+            <label><input type="checkbox" class="filter-checkbox" value="Produce"> Produce</label>
+
+            <label><input type="checkbox" class="filter-checkbox" value="Vegetarian"> Vegetarian</label>
+            <label><input type="checkbox" class="filter-checkbox" value="Vegan"> Vegan</label>
+            <label><input type="checkbox" class="filter-checkbox" value="Gluten-Free"> Gluten-Free</label>
+            
+            <label><input type="checkbox" class="filter-checkbox" value="Under5"> Under $5</label>
+            <label><input type="checkbox" class="filter-checkbox" value="Under7"> Under $7</label>
+
+            <button id="apply-filters">Apply Filters</button>
         </div>
+
         
         <div class="dashboard-grid food-grid">
             <div class="food-item">
@@ -261,6 +270,10 @@
                     <div class="food-tags">
                         <span class="food-tag">Meal</span>
                         <span class="food-tag">Hot</span>
+                        <span class="food-tag">Vegetarian</span>
+                        <span class="food-tag">Under $5</span>
+                        <span class="food-tag">Under $7</span>
+
                     </div>
                     <h3 class="food-title">Vegetable Pasta Bowl</h3>
                     <div class="food-price">$4.50 <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$7.99</span></div>
@@ -279,6 +292,7 @@
                     <div class="food-tags">
                         <span class="food-tag">Groceries</span>
                         <span class="food-tag">Produce</span>
+                        <span class="food-tag">Under $7</span>
                     </div>
                     <h3 class="food-title">Fresh Vegetable Bundle</h3>
                     <div class="food-price">$6.99 <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$12.50</span></div>
@@ -297,6 +311,7 @@
                     <div class="food-tags">
                         <span class="food-tag">Bakery</span>
                         <span class="food-tag">Under $5</span>
+                        <span class="food-tag">Under $7</span>
                     </div>
                     <h3 class="food-title">Day-End Bread Assortment</h3>
                     <div class="food-price">$3.25 <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$8.99</span></div>
@@ -315,6 +330,7 @@
                     <div class="food-tags">
                         <span class="food-tag">Meal</span>
                         <span class="food-tag">Cold</span>
+                        <span class="food-tag">Under $7</span>
                     </div>
                     <h3 class="food-title">Student Lunch Box</h3>
                     <div class="food-price">$5.50 <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$9.00</span></div>
@@ -327,6 +343,28 @@
                 </div>
             </div>
         </div>
+
+        <div class="dashboard-grid food-grid">
+            <div class="food-item">
+                <img src="/api/placeholder/300/200" alt="Budget meal" class="food-img">
+                <div class="food-info">
+                    <div class="food-tags">
+                        <span class="food-tag">Meal</span>
+                        <span class="food-tag">Vegan</span>
+                        <span class="food-tag">Vegetarian</span>
+                        <span class="food-tag">Gluten-Free</span>
+                    </div>
+                    <h3 class="food-title">Quinoa & Roasted Vegetable Bowl</h3>
+                    <div class="food-price">$7.50 <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$11.99</span></div>
+                    <p class="food-description">A nutritious bowl filled with quinoa, roasted seasonal vegetables like zucchini, bell peppers, and sweet potatoes, topped with a light olive oil dressing. Perfect for a gluten-free, plant-based meal.</p>
+                    <button class="btn">Add to Cart</button>
+                    <div class="vendor-info">
+                        <img src="/api/placeholder/25/25" alt="Vendor">
+                        Vegan Eats
+                    </div>
+                </div>
+        </div>
+
         
         <h3 class="section-title">Recently Added</h3>
         <div class="dashboard-grid food-grid">
@@ -336,8 +374,10 @@
                     <div class="food-tags">
                         <span class="food-tag">Meal</span>
                         <span class="food-tag">Hot</span>
+                        <span class="food-tag">Vegetarian</span>
+                        <span class="food-tag">Under $7</span>
                     </div>
-                    <h3 class="food-title">Budget Curry Bowl</h3>
+                    <h3 class="food-title">Budget Vegetarian Curry Bowl</h3>
                     <div class="food-price">$5.99 <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$10.99</span></div>
                     <p class="food-description">Flavorful curry with rice and vegetables. Hearty and filling meal at a budget price.</p>
                     <button class="btn">Add to Cart</button>
@@ -354,6 +394,7 @@
                     <div class="food-tags">
                         <span class="food-tag">Groceries</span>
                         <span class="food-tag">Under $5</span>
+                        <span class="food-tag">Under $7</span>
                     </div>
                     <h3 class="food-title">Pasta & Sauce Kit</h3>
                     <div class="food-price">$4.25 <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$7.50</span></div>
@@ -365,6 +406,8 @@
                     </div>
                 </div>
             </div>
+
+            
         </div>
     </main>
     
@@ -654,39 +697,6 @@
     <div id="order-success" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,255,0,0.1); z-index:1002; justify-content:center; align-items:center; font-size:2rem;">
         ✅ Order Placed!
     </div> 
-
-
-
-
-
-    <!-- <div id="cart-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
-        <div style="background:white; padding:20px; border-radius:10px; width:90%; max-width:400px;">
-            <h3>Your Cart</h3>
-            <ul id="cart-items"></ul>
-            <p><strong>Total: $<span id="cart-total">0.00</span></strong></p>
-            <button onclick="showCheckout()">Proceed to Payment</button>
-            <button onclick="closeCart()">Close</button>
-        </div>
-    </div>
-
-    <div id="checkout-form" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:1001; justify-content:center; align-items:center;">
-        <div style="background:white; padding:20px; border-radius:10px; width:90%; max-width:400px;">
-            <h3>Payment</h3>
-            <label>Name on Card:</label><br>
-            <input type="text" id="name" style="width:100%; margin-bottom:10px;"><br>
-            <label>Card Number:</label><br>
-            <input type="text" id="card" style="width:100%; margin-bottom:10px;"><br>
-            <button onclick="submitOrder()">Submit</button>
-            <button onclick="closeCheckout()">Cancel</button>
-        </div>
-    </div>
-
-    <div id="order-success" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,255,0,0.1); z-index:1002; justify-content:center; align-items:center; font-size:2rem;">
-        ✅ Order Placed!
-    </div> -->
-
-
-
 
     <script src="dashboard.js"></script>
 </body>

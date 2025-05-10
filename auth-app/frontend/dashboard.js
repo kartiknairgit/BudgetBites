@@ -279,36 +279,55 @@ document.addEventListener('DOMContentLoaded', function () {
         
         document.getElementById('cart-total').innerText = total.toFixed(2);
     }
+    // document.getElementById('apply-filters').addEventListener('click', () => {
+    //   const checked = Array.from(document.querySelectorAll('.filter-checkbox:checked')).map(cb => cb.value);
 
-    // function closeCart() {
-    //     document.getElementById('cart-modal').style.display = 'none';
-    // }
+    //   document.querySelectorAll('.food-item').forEach(item => {
+    //     const tagSpans = item.querySelectorAll('.food-tag');
+    //     const tags = Array.from(tagSpans).map(tag => tag.textContent.trim());
 
-    // function showCheckout() {
-    //     closeCart();
-    //     document.getElementById('checkout-form').style.display = 'flex';
-    // }
+    //     const priceText = item.querySelector('.food-price')?.textContent.trim().match(/\$([\d.]+)/);
+    //     const price = priceText ? parseFloat(priceText[1]) : Infinity;
 
-    // function closeCheckout() {
-    //     document.getElementById('checkout-form').style.display = 'none';
-    // }
+    //     let matches = false;
 
-    // function submitOrder() {
-    //     const name = document.getElementById('name').value;
-    //     const card = document.getElementById('card').value;
-        
-    //     if (name && card) {
-    //         document.getElementById('checkout-form').style.display = 'none';
-    //         document.getElementById('order-success').style.display = 'flex';
-    //         cart = [];
-    //         updateCartDisplay();
-    //         setTimeout(() => {
-    //             document.getElementById('order-success').style.display = 'none';
-    //         }, 3000);
-    //     } else {
-    //         alert('Please fill in payment details.');
+    //     for (const filter of checked) {
+    //       if (filter === "Under5" && price < 5) {
+    //         matches = true;
+    //       } else if (tags.includes(filter)) {
+    //         matches = true;
+    //       }
     //     }
-    // }
-    
+
+    //     item.style.display = (checked.length === 0 || matches) ? "" : "none";
+    //   });
+    // });
+    document.getElementById('apply-filters').addEventListener('click', () => {
+    const checked = Array.from(document.querySelectorAll('.filter-checkbox:checked')).map(cb => cb.value);
+
+    document.querySelectorAll('.food-item').forEach(item => {
+        const tagSpans = item.querySelectorAll('.food-tag');
+        const tags = Array.from(tagSpans).map(tag => tag.textContent.trim());
+
+        const priceText = item.querySelector('.food-price')?.textContent.trim().match(/\$([\d.]+)/);
+        const price = priceText ? parseFloat(priceText[1]) : Infinity;
+
+        let matches = false;
+
+        for (const filter of checked) {
+        if (filter === "Under5" && price < 5) {
+            matches = true;
+        } else if (filter === "Under7" && price < 7) {
+            matches = true;
+        } else if (tags.includes(filter)) {
+            matches = true;
+        }
+        }
+
+        item.style.display = (checked.length === 0 || matches) ? "" : "none";
+    });
+    });
+
+
 });
 
