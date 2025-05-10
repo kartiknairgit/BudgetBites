@@ -859,5 +859,215 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Initialize the friend system when the page loads
     initializeFriendSystem();
+
+        // Nutrition Facts Toggle Functionality
+    function initializeNutritionToggles() {
+        // Sample nutrition data for each food item
+        const nutritionData = {
+            "Vegetable Pasta Bowl": {
+                calories: 320,
+                totalFat: "8g",
+                saturatedFat: "1.5g",
+                cholesterol: "0mg",
+                sodium: "580mg",
+                totalCarbs: "52g",
+                dietaryFiber: "7g",
+                sugars: "6g",
+                protein: "12g",
+                badges: ["vegetarian", "low-fat", "high-fiber"]
+            },
+            "Fresh Vegetable Bundle": {
+                calories: 150,
+                totalFat: "2g",
+                saturatedFat: "0g",
+                cholesterol: "0mg",
+                sodium: "30mg",
+                totalCarbs: "30g",
+                dietaryFiber: "8g",
+                sugars: "12g",
+                protein: "5g",
+                badges: ["vegetarian", "vegan", "low-fat"]
+            },
+            "Day-End Bread Assortment": {
+                calories: 280,
+                totalFat: "4g",
+                saturatedFat: "0.5g",
+                cholesterol: "0mg",
+                sodium: "450mg",
+                totalCarbs: "52g",
+                dietaryFiber: "3g",
+                sugars: "8g",
+                protein: "9g",
+                badges: ["vegetarian"]
+            },
+            "Student Lunch Box": {
+                calories: 520,
+                totalFat: "18g",
+                saturatedFat: "5g",
+                cholesterol: "45mg",
+                sodium: "820mg",
+                totalCarbs: "65g",
+                dietaryFiber: "5g",
+                sugars: "22g",
+                protein: "24g",
+                badges: []
+            },
+            "Quinoa & Roasted Vegetable Bowl": {
+                calories: 380,
+                totalFat: "12g",
+                saturatedFat: "1.5g",
+                cholesterol: "0mg",
+                sodium: "320mg",
+                totalCarbs: "58g",
+                dietaryFiber: "12g",
+                sugars: "8g",
+                protein: "14g",
+                badges: ["vegetarian", "vegan", "gluten-free", "high-fiber"]
+            },
+            "Budget Vegetarian Curry Bowl": {
+                calories: 410,
+                totalFat: "14g",
+                saturatedFat: "6g",
+                cholesterol: "0mg",
+                sodium: "680mg",
+                totalCarbs: "62g",
+                dietaryFiber: "9g",
+                sugars: "10g",
+                protein: "12g",
+                badges: ["vegetarian"]
+            },
+            "Pasta & Sauce Kit": {
+                calories: 350,
+                totalFat: "3g",
+                saturatedFat: "0.5g",
+                cholesterol: "0mg",
+                sodium: "520mg",
+                totalCarbs: "68g",
+                dietaryFiber: "4g",
+                sugars: "12g",
+                protein: "12g",
+                badges: ["vegetarian", "low-fat"]
+            }
+        };
+
+        // Get all food items
+        const foodItems = document.querySelectorAll('.food-item');
+        
+        // For each food item, add the nutrition button and overlay
+        foodItems.forEach(item => {
+            const foodTitle = item.querySelector('.food-title').textContent;
+            const foodInfo = item.querySelector('.food-info');
+            
+            // Add the nutrition toggle button if it doesn't exist
+            if (!item.querySelector('.nutrition-toggle')) {
+                // Create button
+                const nutritionButton = document.createElement('button');
+                nutritionButton.className = 'btn-sm btn-outline nutrition-toggle';
+                nutritionButton.innerHTML = '<span class="nutrition-icon">🍎</span> Nutrition Facts';
+                
+                // Insert before the Add to Cart button
+                const addToCartBtn = item.querySelector('.btn');
+                if (addToCartBtn) {
+                    foodInfo.insertBefore(nutritionButton, addToCartBtn);
+                }
+                
+                // Create nutrition overlay
+                const nutritionOverlay = document.createElement('div');
+                nutritionOverlay.className = 'nutrition-overlay';
+                
+                // Get nutrition data for this food item
+                const nutrition = nutritionData[foodTitle] || {
+                    calories: "N/A",
+                    totalFat: "N/A",
+                    saturatedFat: "N/A",
+                    cholesterol: "N/A",
+                    sodium: "N/A",
+                    totalCarbs: "N/A",
+                    dietaryFiber: "N/A",
+                    sugars: "N/A",
+                    protein: "N/A",
+                    badges: []
+                };
+                
+                // Create badges HTML
+                let badgesHTML = '';
+                nutrition.badges.forEach(badge => {
+                    const badgeText = badge.replace('-', ' ');
+                    badgesHTML += `<div class="nutrition-badge ${badge}">${badgeText}</div>`;
+                });
+                
+                // Populate the overlay
+                nutritionOverlay.innerHTML = `
+                    <div class="nutrition-header">
+                        <h4>Nutrition Facts</h4>
+                        <button class="close-nutrition">&times;</button>
+                    </div>
+                    <div class="nutrition-content">
+                        <div class="nutrition-item">
+                            <span class="nutrition-label">Calories</span>
+                            <span class="nutrition-value">${nutrition.calories}</span>
+                        </div>
+                        <div class="nutrition-item">
+                            <span class="nutrition-label">Total Fat</span>
+                            <span class="nutrition-value">${nutrition.totalFat}</span>
+                        </div>
+                        <div class="nutrition-item">
+                            <span class="nutrition-label">Saturated Fat</span>
+                            <span class="nutrition-value">${nutrition.saturatedFat}</span>
+                        </div>
+                        <div class="nutrition-item">
+                            <span class="nutrition-label">Cholesterol</span>
+                            <span class="nutrition-value">${nutrition.cholesterol}</span>
+                        </div>
+                        <div class="nutrition-item">
+                            <span class="nutrition-label">Sodium</span>
+                            <span class="nutrition-value">${nutrition.sodium}</span>
+                        </div>
+                        <div class="nutrition-item">
+                            <span class="nutrition-label">Total Carbs</span>
+                            <span class="nutrition-value">${nutrition.totalCarbs}</span>
+                        </div>
+                        <div class="nutrition-item">
+                            <span class="nutrition-label">Dietary Fiber</span>
+                            <span class="nutrition-value">${nutrition.dietaryFiber}</span>
+                        </div>
+                        <div class="nutrition-item">
+                            <span class="nutrition-label">Sugars</span>
+                            <span class="nutrition-value">${nutrition.sugars}</span>
+                        </div>
+                        <div class="nutrition-item">
+                            <span class="nutrition-label">Protein</span>
+                            <span class="nutrition-value">${nutrition.protein}</span>
+                        </div>
+                        <div class="nutrition-footer">
+                            ${badgesHTML}
+                        </div>
+                    </div>
+                `;
+                
+                // Add the overlay to the food item
+                foodInfo.appendChild(nutritionOverlay);
+                
+                // Add click event for the button
+                nutritionButton.addEventListener('click', (e) => {
+                    console.log("Nutrition button clicked!");
+                    e.preventDefault();
+                    e.stopPropagation();
+                    nutritionOverlay.style.display = 'block';
+                });
+                
+                // Add click event for the close button
+                nutritionOverlay.querySelector('.close-nutrition').addEventListener('click', (e) => {
+                    console.log("Close nutrition button clicked!");
+                    e.preventDefault();
+                    e.stopPropagation();
+                    nutritionOverlay.style.display = 'none';
+                });
+            }
+        });
+    }
+
+    initializeNutritionToggles();
+    
 });
 
