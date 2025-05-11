@@ -1069,5 +1069,240 @@ document.addEventListener('DOMContentLoaded', function () {
 
     initializeNutritionToggles();
     
+    // Add this to your existing DOMContentLoaded event listener
+
+    // Price Alert Functionality
+    const alertButtons = document.querySelectorAll('.set-alert-btn');
+    const alertModal = document.getElementById('price-alert-modal');
+    const closeAlertModalBtn = document.getElementById('close-alert-modal');
+    const alertForm = document.getElementById('price-alert-form');
+    let currentItemForAlert = null;
+
+    // Set up alerts container
+    const alertsContainer = document.createElement('div');
+    alertsContainer.className = 'alerts-container';
+    document.body.appendChild(alertsContainer);
+
+    // Show previously set alerts on page load
+    function showExistingAlerts() {
+        const alerts = JSON.parse(localStorage.getItem('priceAlerts') || '[]');
+        
+        // Add badges to items with alerts
+        document.querySelectorAll('.food-item').forEach(item => {
+            const title = item.querySelector('.food-title').textContent;
+            const matchingAlert = alerts.find(alert => alert.title === title);
+            
+            if (matchingAlert) {
+                // Add alert badge if doesn't exist already
+                if (!item.querySelector('.price-alert-badge')) {
+                    const badge = document.createElement('div');
+                    badge.className = 'price-alert-badge';
+                    badge.innerHTML = `🔔 $${matchingAlert.targetPrice}`;
+                    item.appendChild(badge);
+                }
+            }
+        });
+    }
+
+    // Init alert buttons
+    alertButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            const foodItem = button.closest('.food-item');
+            const title = foodItem.querySelector('.food-title').textContent;
+            const priceText = foodItem.querySelector('.food-price').textContent;
+            const currentPrice = parseFloat(priceText.match(/\$(\d+\.\d+)/)[1]);
+            
+            // Set form values
+            document.getElementById('alert-item-title').value = title;
+            document.getElementById('alert-current-price').value = currentPrice;
+            document.getElementById('alert-price').value = (currentPrice * 0.9).toFixed(2); // Default to 10% less
+            
+            // Keep track of current item
+            currentItemForAlert = foodItem;
+            
+            // Show modal
+            alertModal.style.display = 'flex';
+        });
+    });
+
+    // Close modal
+    if (closeAlertModalBtn) {
+        closeAlertModalBtn.addEventListener('click', () => {
+            alertModal.style.display = 'none';
+        });
+    }
+
+    // Handle click outside modal
+    window.addEventListener('click', (e) => {
+        if (e.target === alertModal) {
+            alertModal.style.display = 'none';
+        }
+    });
+
+    // Handle alert form submission
+    if (alertForm) {
+        alertForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('alert-item-title').value;
+            const currentPrice = parseFloat(document.getElementById('alert-current-price').value);
+            const targetPrice = parseFloat(document.getElementById('alert-price').value);
+            
+            // Validate
+            if (targetPrice >= currentPrice) {
+                alert('Target price must be lower than the current price.');
+                return;
+            }
+            
+            // Save alert
+            const newAlert = {
+                title,
+                currentPrice,
+                targetPrice,
+                createdAt: new Date().toISOString()
+            };
+            
+            const alerts = JSON.parse(localStorage.getItem('priceAlerts') || '[]');
+            
+            // Check if alert for this item already exists
+            const existingAlertIndex = alerts.findIndex(alert => alert.title === title);
+            if (existingAlertIndex !== -1) {
+                alerts[existingAlertIndex] = newAlert;
+            } else {
+                alerts.push(newAlert);
+            }
+            
+            localStorage.setItem('priceAlerts', JSON.stringify(alerts));
+            
+            // Add badge to item
+            if (currentItemForAlert) {
+                // Remove existing badge if any
+                const existingBadge = currentItemForAlert.querySelector('.price-alert-badge');
+                if (existingBadge) {
+                    existingBadge.remove();
+                }
+                
+                // Add new badge
+                const badge = document.createElement('div');
+                badge.className = 'price-alert-badge';
+                badge.innerHTML = `🔔 $${targetPrice.toFixed(2)}`;
+                currentItemForAlert.appendChild(badge);
+            }
+            
+            // Show confirmation
+            showAlertNotification(`Alert set for ${title}`, `We'll notify you when price drops below $${targetPrice.toFixed(2)}`);
+            
+            // Reset and close modal
+            alertForm.reset();
+            alertModal.style.display = 'none';
+        });
+    }
+
+    // Show notification
+    function showAlertNotification(title, message, action = null) {
+        const notification = document.createElement('div');
+        notification.className = 'alert-notification';
+        
+        let actionHtml = '';
+        if (action) {
+            actionHtml = `<div class="alert-notification-action">${action}</div>`;
+        }
+        
+        notification.innerHTML = `
+            <div class="alert-notification-title">${title}</div>
+            <div class="alert-notification-message">${message}</div>
+            ${actionHtml}
+        `;
+        
+        alertsContainer.appendChild(notification);
+        
+        // Remove after 5 seconds
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateX(-100%)';
+            notification.style.transition = 'all 0.3s ease';
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 300);
+        }, 5000);
+    }
+
+    // Check for triggered alerts when prices update
+    function checkPriceAlerts() {
+        const alerts = JSON.parse(localStorage.getItem('priceAlerts') || '[]');
+        
+        document.querySelectorAll('.food-item').forEach(item => {
+            const title = item.querySelector('.food-title').textContent;
+            const priceText = item.querySelector('.food-price').textContent;
+            const currentPrice = parseFloat(priceText.match(/\$(\d+\.\d+)/)[1]);
+            
+            const matchingAlert = alerts.find(alert => alert.title === title);
+            
+            if (matchingAlert && currentPrice <= matchingAlert.targetPrice) {
+                // Price target reached! Notify user
+                showAlertNotification(
+                    '🎉 Price Alert Triggered!',
+                    `${title} is now $${currentPrice.toFixed(2)}, below your target of $${matchingAlert.targetPrice.toFixed(2)}`,
+                    `<button class="btn-sm" onclick="addToCartById('${title}')">Add to Cart</button>`
+                );
+                
+                // Remove the alert
+                const updatedAlerts = alerts.filter(alert => alert.title !== title);
+                localStorage.setItem('priceAlerts', JSON.stringify(updatedAlerts));
+                
+                // Remove the badge
+                const badge = item.querySelector('.price-alert-badge');
+                if (badge) {
+                    badge.remove();
+                }
+            }
+        });
+    }
+
+    // Helper function to add item to cart by title (for alert notifications)
+    function addToCartById(title) {
+        document.querySelectorAll('.food-item').forEach(item => {
+            if (item.querySelector('.food-title').textContent === title) {
+                const addBtn = item.querySelector('.btn');
+                if (addBtn) {
+                    addBtn.click();
+                }
+            }
+        });
+    }
+
+    // Initialize alerts on page load
+    showExistingAlerts();
+
+    // Check for triggered alerts periodically (every minute)
+    setInterval(checkPriceAlerts, 60000);
+
+    // Add this function to dynamically add price alert buttons to all food items
+        function addPriceAlertButtons() {
+            document.querySelectorAll('.food-item').forEach(item => {
+                // Skip if it already has a price alert button
+                if (item.querySelector('.set-alert-btn')) {
+                    return;
+                }
+                
+                // Find the Add to Cart button
+                const addToCartBtn = item.querySelector('.btn');
+                if (addToCartBtn) {
+                    // Create the alert button
+                    const alertBtn = document.createElement('button');
+                    alertBtn.className = 'btn-sm btn-outline set-alert-btn';
+                    alertBtn.innerHTML = '<span class="alert-icon">🔔</span> Set Price Alert';
+                    
+                    // Insert after Add to Cart button
+                    addToCartBtn.insertAdjacentElement('afterend', alertBtn);
+                }
+            });
+        }
+
+        // Call the function to add price alert buttons to all food items
+        addPriceAlertButtons();
+
 });
 

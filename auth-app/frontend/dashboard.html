@@ -304,6 +304,9 @@
                         <span class="nutrition-icon">🍎</span> Nutrition Facts
                     </button>
                     <button class="btn">Add to Cart</button>
+                    <button class="btn-sm btn-outline set-alert-btn">
+                        <span class="alert-icon">🔔</span> Set Price Alert
+                    </button>
                     <div class="vendor-info">
                         <img src="/api/placeholder/25/25" alt="Vendor">
                         Campus Eats
@@ -332,6 +335,9 @@
                     <div class="food-price">$6.99 <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$12.50</span></div>
                     <p class="food-description">Bundle of fresh, locally sourced vegetables. Includes carrots, potatoes, onions, and seasonal greens.</p>
                     <button class="btn">Add to Cart</button>
+                    <button class="btn-sm btn-outline set-alert-btn">
+                        <span class="alert-icon">🔔</span> Set Price Alert
+                    </button>
                     <div class="vendor-info">
                         <img src="/api/placeholder/25/25" alt="Vendor">
                         Green Market
@@ -351,6 +357,9 @@
                     <div class="food-price">$3.25 <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$8.99</span></div>
                     <p class="food-description">Assorted breads and rolls from our local bakery. Perfect quality, available at the end of the day at a reduced price.</p>
                     <button class="btn">Add to Cart</button>
+                    <button class="btn-sm btn-outline set-alert-btn">
+                        <span class="alert-icon">🔔</span> Set Price Alert
+                    </button>
                     <div class="vendor-info">
                         <img src="/api/placeholder/25/25" alt="Vendor">
                         City Bakery
@@ -370,6 +379,9 @@
                     <div class="food-price">$5.50 <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$9.00</span></div>
                     <p class="food-description">Complete meal with sandwich, fruit, and a homemade cookie. Perfect for students on the go.</p>
                     <button class="btn">Add to Cart</button>
+                    <button class="btn-sm btn-outline set-alert-btn">
+                        <span class="alert-icon">🔔</span> Set Price Alert
+                    </button>
                     <div class="vendor-info">
                         <img src="/api/placeholder/25/25" alt="Vendor">
                         Lunch Express
@@ -392,6 +404,9 @@
                     <div class="food-price">$7.50 <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$11.99</span></div>
                     <p class="food-description">A nutritious bowl filled with quinoa, roasted seasonal vegetables like zucchini, bell peppers, and sweet potatoes, topped with a light olive oil dressing. Perfect for a gluten-free, plant-based meal.</p>
                     <button class="btn">Add to Cart</button>
+                    <button class="btn-sm btn-outline set-alert-btn">
+                        <span class="alert-icon">🔔</span> Set Price Alert
+                    </button>
                     <div class="vendor-info">
                         <img src="/api/placeholder/25/25" alt="Vendor">
                         Vegan Eats
@@ -415,6 +430,9 @@
                     <div class="food-price">$5.99 <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$10.99</span></div>
                     <p class="food-description">Flavorful curry with rice and vegetables. Hearty and filling meal at a budget price.</p>
                     <button class="btn">Add to Cart</button>
+                    <button class="btn-sm btn-outline set-alert-btn">
+                        <span class="alert-icon">🔔</span> Set Price Alert
+                    </button>
                     <div class="vendor-info">
                         <img src="/api/placeholder/25/25" alt="Vendor">
                         Spice Kitchen
@@ -434,6 +452,9 @@
                     <div class="food-price">$4.25 <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$7.50</span></div>
                     <p class="food-description">Complete pasta kit with dry pasta and sauce. Makes 4 servings - perfect for students!</p>
                     <button class="btn">Add to Cart</button>
+                    <button class="btn-sm btn-outline set-alert-btn">
+                        <span class="alert-icon">🔔</span> Set Price Alert
+                    </button>
                     <div class="vendor-info">
                         <img src="/api/placeholder/25/25" alt="Vendor">
                         Student Pantry
@@ -854,6 +875,28 @@
                     <button id="decline-split" class="btn-outline">Decline</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div id="price-alert-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Set Price Alert</h2>
+                <span class="close-modal" id="close-alert-modal">&times;</span>
+            </div>
+            <form id="price-alert-form">
+                <div class="input-group">
+                    <label for="alert-price">Alert me when price drops below:</label>
+                    <div class="price-input-wrapper">
+                        <span class="currency-symbol">$</span>
+                        <input type="number" id="alert-price" name="alert-price" step="0.01" required>
+                    </div>
+                </div>
+                <input type="hidden" id="alert-item-id" name="alert-item-id">
+                <input type="hidden" id="alert-item-title" name="alert-item-title">
+                <input type="hidden" id="alert-current-price" name="alert-current-price">
+                <button type="submit" class="btn">Set Alert</button>
+            </form>
         </div>
     </div>
 
