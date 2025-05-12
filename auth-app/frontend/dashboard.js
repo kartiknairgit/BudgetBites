@@ -947,6 +947,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 sugars: "12g",
                 protein: "12g",
                 badges: ["vegetarian", "low-fat"]
+            },
+            "Spicy Chickpea Wrap": {
+                calories: 430,
+                totalFat: "18g",
+                saturatedFat: "2g",
+                cholesterol: "0mg",
+                sodium: "600mg",
+                totalCarbs: "52g",
+                dietaryFiber: "9g",
+                sugars: "5g",
+                protein: "14g",
+                badges: ["vegan", "high-fiber", "spicy"]
             }
         };
 
@@ -1305,4 +1317,5 @@ document.addEventListener('DOMContentLoaded', function () {
         addPriceAlertButtons();
 
 });
+
 

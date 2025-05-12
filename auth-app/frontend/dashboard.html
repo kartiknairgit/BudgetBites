@@ -210,6 +210,10 @@
             opacity: 0;
             transition: opacity 0.2s ease-in-out;
         }
+        .food-rating {
+            color: #FFD700; /* gold color, visible in both modes */
+        }
+
 
     </style>
 </head>
@@ -298,11 +302,13 @@
 
                     </div>
                     <h3 class="food-title">Vegetable Pasta Bowl</h3>
+                    <div class="food-rating">⭐ 4.6 out of 5 (120 reviews)</div>
+
                     <div class="food-price">$4.50 <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$7.99</span></div>
                     <p class="food-description">Freshly made pasta with seasonal vegetables and homemade sauce. Perfect for a nutritious lunch or dinner.</p>
-                    <button class="btn-sm btn-outline nutrition-toggle">
+                    <!-- <button class="btn-sm btn-outline nutrition-toggle">
                         <span class="nutrition-icon">🍎</span> Nutrition Facts
-                    </button>
+                    </button> -->
                     <button class="btn">Add to Cart</button>
                     <button class="btn-sm btn-outline set-alert-btn">
                         <span class="alert-icon">🔔</span> Set Price Alert
@@ -332,6 +338,7 @@
                         <span class="food-tag">Under $7</span>
                     </div>
                     <h3 class="food-title">Fresh Vegetable Bundle</h3>
+                    <p class="food-rating">⭐ 4.3 out of 5 (87 reviews)</p>
                     <div class="food-price">$6.99 <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$12.50</span></div>
                     <p class="food-description">Bundle of fresh, locally sourced vegetables. Includes carrots, potatoes, onions, and seasonal greens.</p>
                     <button class="btn">Add to Cart</button>
@@ -354,6 +361,7 @@
                         <span class="food-tag">Under $7</span>
                     </div>
                     <h3 class="food-title">Day-End Bread Assortment</h3>
+                    <p class="food-rating">⭐ 4.8 out of 5 (231 reviews)</p>
                     <div class="food-price">$3.25 <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$8.99</span></div>
                     <p class="food-description">Assorted breads and rolls from our local bakery. Perfect quality, available at the end of the day at a reduced price.</p>
                     <button class="btn">Add to Cart</button>
@@ -376,6 +384,8 @@
                         <span class="food-tag">Under $7</span>
                     </div>
                     <h3 class="food-title">Student Lunch Box</h3>
+                    <p class="food-rating">⭐ 4.2 out of 5 (65 reviews)</p>
+
                     <div class="food-price">$5.50 <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$9.00</span></div>
                     <p class="food-description">Complete meal with sandwich, fruit, and a homemade cookie. Perfect for students on the go.</p>
                     <button class="btn">Add to Cart</button>
@@ -401,6 +411,8 @@
                         <span class="food-tag">Gluten-Free</span>
                     </div>
                     <h3 class="food-title">Quinoa & Roasted Vegetable Bowl</h3>
+                    <p class="food-rating">⭐ 4.7 out of 5 (98 reviews)</p>
+
                     <div class="food-price">$7.50 <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$11.99</span></div>
                     <p class="food-description">A nutritious bowl filled with quinoa, roasted seasonal vegetables like zucchini, bell peppers, and sweet potatoes, topped with a light olive oil dressing. Perfect for a gluten-free, plant-based meal.</p>
                     <button class="btn">Add to Cart</button>
@@ -427,6 +439,7 @@
                         <span class="food-tag">Under $7</span>
                     </div>
                     <h3 class="food-title">Budget Vegetarian Curry Bowl</h3>
+                    <p class="food-rating">⭐ 4.5 out of 5 (119 reviews)</p>
                     <div class="food-price">$5.99 <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$10.99</span></div>
                     <p class="food-description">Flavorful curry with rice and vegetables. Hearty and filling meal at a budget price.</p>
                     <button class="btn">Add to Cart</button>
@@ -449,6 +462,7 @@
                         <span class="food-tag">Under $7</span>
                     </div>
                     <h3 class="food-title">Pasta & Sauce Kit</h3>
+                    <p class="food-rating">⭐ 4.4 out of 5 (73 reviews)</p>
                     <div class="food-price">$4.25 <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$7.50</span></div>
                     <p class="food-description">Complete pasta kit with dry pasta and sauce. Makes 4 servings - perfect for students!</p>
                     <button class="btn">Add to Cart</button>
@@ -461,6 +475,72 @@
                     </div>
                 </div>
             </div>
+            <h3 class="section-title">Previously Purchased Item</h3>
+            <div class="dashboard-grid food-grid">
+                <div class="food-item">
+                    <img src="/api/placeholder/300/200" alt="Spicy Chickpea Wrap" class="food-img">
+                    <div class="food-info">
+                        <div class="food-tags">
+                            <span class="food-tag">Wrap</span>
+                            <span class="food-tag">Spicy</span>
+                            <span class="food-tag">Vegan</span>
+                            <span class="food-tag">Under $6</span>
+                        </div>
+                        <h3 class="food-title">Spicy Chickpea Wrap</h3>
+                        <p class="food-rating">⭐ 4.2 out of 5 (87 reviews)</p>
+                        <div class="food-price">$4.99
+                            <span style="text-decoration: line-through; color: #999; font-size: 0.9rem;">$8.50</span>
+                        </div>
+                        <p class="food-description">Toasted whole wheat wrap filled with spicy chickpeas, lettuce, and tahini sauce. Perfect on-the-go meal.</p>
+                    
+                        <!-- Review Section -->
+                        <div class="review-section" id="review-section" style="margin-top: 1em;">
+                            <label for="rating2">Your Rating:</label>
+                            <select id="rating2">
+                                <option value="5">★★★★★</option>
+                                <option value="4">★★★★☆</option>
+                                <option value="3">★★★☆☆</option>
+                                <option value="2">★★☆☆☆</option>
+                                <option value="1">★☆☆☆☆</option>
+                            </select>
+                            <br><br>
+                            <label for="comment2">Your Comment:</label><br>
+                            <textarea id="comment2" rows="3" style="width: 100%;"></textarea><br><br>
+                            <button class="btn-sm btn-outline" onclick="postReview()">Post Review</button>
+                        </div>
+
+
+                        <!-- Success Message -->
+                        <div id="success-message" style="display: none; margin-top: 1em; color: green;">
+                            ✅ Successfully posted review
+                        </div>
+
+                        <button class="btn">Add to Cart</button>
+                        <button class="btn-sm btn-outline set-alert-btn">
+                            <span class="alert-icon">🔔</span> Set Price Alert
+                        </button>
+                        <div class="vendor-info">
+                            <img src="/api/placeholder/25/25" alt="Vendor">
+                            Green Bites
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        <script>
+        function postReview() {
+            document.getElementById("review-section").style.display = "none";
+            document.getElementById("success-message").style.display = "block";
+        }
+        </script>
+       
+           
+        </div>
+    </main>
+
+
+
 
             
         </div>
