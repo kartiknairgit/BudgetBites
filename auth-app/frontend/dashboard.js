@@ -282,7 +282,9 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('cart-count').innerText = cart.length;
 
     // point explicitly at the modal list
-    const cartItemsList = document.getElementById('cart-items--modal');
+    //const cartItemsList = document.getElementById('cart-items--modal');
+    const cartItemsList = document.getElementById('cart-items');
+
     cartItemsList.innerHTML = '';
 
     let total = 0;
@@ -1655,6 +1657,16 @@ document.addEventListener('DOMContentLoaded', function () {
         // Initialize loyalty program
         initializeLoyaltyProgram();
 });
+
+
+
+
+
+
+
+
+
+
 
 
 
