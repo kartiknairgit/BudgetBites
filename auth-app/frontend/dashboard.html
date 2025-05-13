@@ -237,11 +237,21 @@
     </header>
 
     <main class="dashboard container" id="customer-dashboard">
-        <div class="user-welcome">
-            <h2>Welcome, <span id="username-display">User</span>!</h2>
-            <p>Find affordable and delicious food options from local vendors and restaurants, perfect for students and budget-conscious households.</p>
-            <div class="decoration"></div>
-        </div>
+    <div class="user-welcome">
+        <h2>Welcome, <span id="username-display">User</span>!</h2>
+        <p>Find affordable and delicious food options from local vendors and restaurants, perfect for students and budget-conscious households.</p>
+        <div class="decoration"></div>
+        
+        <div class="loyalty-points">
+            <div class="loyalty-icon">🏆</div>
+            <div class="loyalty-details">
+                <span id="points-balance">0</span> Loyalty Points
+                <button id="view-rewards" class="btn-sm">View Rewards</button>
+            </div>
+        </div> 
+    </div>
+
+        
 
         <div class="stats-container">
             <div class="stat-card">
@@ -812,7 +822,7 @@
     </div>
     
     <!-- Cart Modal -->
-    <div id="cart-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
+    <!-- <div id="cart-modal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
     <div style="background:white; padding:20px; border-radius:10px; width:90%; max-width:400px;">
         <h3>Your Cart</h3>
         <ul id="cart-items"></ul>
@@ -820,7 +830,30 @@
         <button id="proceed-btn">Proceed to Payment</button>
         <button id="close-cart-btn">Close</button>
     </div>
+    </div> -->
+    <!-- Cart Modal -->
+    <div id="cart-modal"
+        style="display:none;
+                position:fixed;
+                top:0; left:0; right:0; bottom:0;
+                background:rgba(0,0,0,0.5);
+                z-index:1000;
+                justify-content:center;
+                align-items:center;">
+    <div style="background:white;
+                padding:20px;
+                border-radius:10px;
+                width:90%;
+                max-width:400px;">
+        <h3>Your Cart (<span id="cart-count">0</span>)</h3>
+        <!-- changed ID here -->
+        <ul id="cart-items--modal"></ul>
+        <p><strong>Total: $<span id="cart-total">0.00</span></strong></p>
+        <button id="proceed-btn">Proceed to Payment</button>
+        <button id="close-cart-btn">Close</button>
     </div>
+    </div>
+
 
     <!-- Checkout Modal -->
     <div id="checkout-form" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); z-index:1001 ; justify-content:center; align-items:center;">
