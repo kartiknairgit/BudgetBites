@@ -1269,3 +1269,123 @@ body:not(.light-mode) .divider {
 input[type="number"]#alert-price {
     padding-left: 25px;
 }
+
+/* Loyalty Program Styles */
+.loyalty-points {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 10px 15px;
+    border-radius: 10px;
+    gap: 10px;
+}
+
+.loyalty-icon {
+    font-size: 24px;
+}
+
+.loyalty-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#points-balance {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Rewards Modal Styles */
+.rewards-list {
+    margin-top: 15px;
+}
+
+.reward-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    transition: all 0.3s;
+}
+
+.reward-item:hover {
+    background-color: rgba(129, 178, 154, 0.1);
+}
+
+.reward-info {
+    flex: 1;
+}
+
+.reward-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.reward-description {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.reward-points {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.points-earned {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--primary-color);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    z-index: 1500;
+    animation: fadeInOut 3s forwards;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translate(-50%, -70%); }
+    20% { opacity: 1; transform: translate(-50%, -50%); }
+    80% { opacity: 1; transform: translate(-50%, -50%); }
+    100% { opacity: 0; transform: translate(-50%, -30%); }
+}
+
+/* Reward tier levels */
+.loyalty-tier {
+    font-size: 0.9rem;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.tier-bronze { color: #cd7f32; }
+.tier-silver { color: #c0c0c0; }
+.tier-gold { color: #ffd700; }
+.tier-platinum { color: #e5e4e2; }
+
+.food-rating {
+    color: #FFD700; /* gold color, visible in both modes */
+}
+
+/* ADD THE NEW CSS HERE */
+.user-welcome .loyalty-points {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 10px 15px;
+    border-radius: 10px;
+    gap: 10px;
+}

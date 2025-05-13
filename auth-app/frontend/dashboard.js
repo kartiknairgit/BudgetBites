@@ -223,9 +223,14 @@ document.addEventListener('DOMContentLoaded', function () {
             const foodItem = btn.closest('.food-item');
             const title = foodItem.querySelector('.food-title').innerText;
             const priceText = foodItem.querySelector('.food-price').innerText;
-            const price = parseFloat(priceText.replace('$', ''));
-
-            cart.push({ title, price });
+            // Ensure we extract just the first price (not the strikethrough price)
+            const priceMatch = priceText.match(/\$(\d+\.\d+)/);
+            const price = priceMatch ? parseFloat(priceMatch[1]) : 0;
+            
+            console.log(`Adding ${title} to cart with price: ${price}`);
+            
+            // Make sure we're storing a number, not a string
+            cart.push({ title, price: Number(price) });
             updateCartDisplay();
         });
     });
@@ -248,19 +253,49 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Submit order
+    // Submit order
     document.getElementById('submit-btn').addEventListener('click', () => {
         const name = document.getElementById('name').value;
         const card = document.getElementById('card').value;
+        
         if (!name || !card) {
-        return alert('Please fill in payment details.');
+            return alert('Please fill in payment details.');
         }
+        
+        // Debug the cart contents
+        console.log("Cart contents:", cart);
+        
+        // Calculate total amount spent - make sure this is getting a number
+        let total = 0;
+        cart.forEach(item => {
+            // Ensure price is a number using parseFloat instead of Number
+            const itemPrice = parseFloat(item.price);
+            console.log(`Item: ${item.title}, Price: ${item.price}, Parsed: ${itemPrice}`);
+            total += itemPrice;
+        });
+        
+        console.log("Total for points calculation:", total);
+        
+        // Add loyalty points
+        const pointsEarned = addLoyaltyPoints(total);
+        console.log("Points earned:", pointsEarned);
+        
+        // Continue with original handler
         document.getElementById('checkout-form').style.display = 'none';
-        document.getElementById('order-success').style.display = 'flex';
+        
+        // Show success message with points
+        const successElem = document.getElementById('order-success');
+        successElem.innerHTML = `✅ Order Placed!<br><span style="font-size: 1.2rem;">You earned ${pointsEarned} loyalty points!</span>`;
+        successElem.style.display = 'flex';
+        
+        // Clear cart
         cart = [];
         updateCartDisplay();
+        
+        // Hide success message after delay
         setTimeout(() => {
-        document.getElementById('order-success').style.display = 'none';
-        }, 3000);
+            document.getElementById('order-success').style.display = 'none';
+        }, 4000);
     });
 
     function updateCartDisplay() {
@@ -1270,6 +1305,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     badge.remove();
                 }
             }
+            // Loyalty Program
         });
     }
 
@@ -1316,6 +1352,219 @@ document.addEventListener('DOMContentLoaded', function () {
         // Call the function to add price alert buttons to all food items
         addPriceAlertButtons();
 
+        function initializeLoyaltyProgram() {
+            // Check if user has loyalty points
+            if (!user.loyaltyPoints) {
+                // Initialize loyalty points if they don't exist
+                user.loyaltyPoints = 0;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+            }
+            
+            // Update points display
+            updatePointsDisplay();
+            
+            // Set up rewards modal
+            const viewRewardsBtn = document.getElementById('view-rewards');
+            const rewardsModal = document.getElementById('rewards-modal');
+            const closeRewardsModalBtn = document.getElementById('close-rewards-modal');
+            
+            if (viewRewardsBtn) {
+                viewRewardsBtn.addEventListener('click', () => {
+                    rewardsModal.style.display = 'flex';
+                    
+                    // Update points in modal
+                    document.getElementById('modal-points-balance').textContent = user.loyaltyPoints;
+                    
+                    // Update tier display
+                    updateTierDisplay();
+                });
+            }
+            
+            if (closeRewardsModalBtn) {
+                closeRewardsModalBtn.addEventListener('click', () => {
+                    rewardsModal.style.display = 'none';
+                });
+            }
+            
+            // Handle clicks outside the modal
+            window.addEventListener('click', (e) => {
+                if (e.target === rewardsModal) {
+                    rewardsModal.style.display = 'none';
+                }
+            });
+            
+            // Set up redeem buttons
+            document.querySelectorAll('.redeem-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const pointsRequired = parseInt(btn.getAttribute('data-points'));
+                    const rewardTitle = btn.getAttribute('data-reward');
+                    
+                    if (user.loyaltyPoints >= pointsRequired) {
+                        // Deduct points
+                        user.loyaltyPoints -= pointsRequired;
+                        
+                        // Save updated points
+                        localStorage.setItem('currentUser', JSON.stringify(user));
+                        
+                        // Update displays
+                        updatePointsDisplay();
+                        document.getElementById('modal-points-balance').textContent = user.loyaltyPoints;
+                        updateTierDisplay();
+                        
+                        // Show success message
+                        alert(`You've redeemed ${rewardTitle}! Check your account for details.`);
+                    } else {
+                        alert(`Not enough points. You need ${pointsRequired - user.loyaltyPoints} more points.`);
+                    }
+                });
+            });
+        }
+    
+        // Update tier display in rewards modal
+        function updateTierDisplay() {
+            const points = user.loyaltyPoints;
+            let tier, icon, nextTier, pointsToNext;
+            
+            if (points < 500) {
+                tier = "Bronze";
+                icon = "🥉";
+                nextTier = "Silver";
+                pointsToNext = 500 - points;
+            } else if (points < 2000) {
+                tier = "Silver";
+                icon = "🥈";
+                nextTier = "Gold";
+                pointsToNext = 2000 - points;
+            } else if (points < 5000) {
+                tier = "Gold";
+                icon = "🥇";
+                nextTier = "Platinum";
+                pointsToNext = 5000 - points;
+            } else {
+                tier = "Platinum";
+                icon = "💎";
+                nextTier = null;
+                pointsToNext = 0;
+            }
+            
+            document.getElementById('loyalty-tier-display').textContent = tier;
+            document.getElementById('tier-icon').textContent = icon;
+            
+            const tierInfo = document.querySelector('.tier-info');
+            if (nextTier) {
+                tierInfo.textContent = `Earn ${pointsToNext} more points to reach ${nextTier} tier!`;
+            } else {
+                tierInfo.textContent = "You've reached our highest tier! Enjoy exclusive benefits.";
+            }
+        }
+    
+        // Update points display in header
+        function updatePointsDisplay() {
+            const pointsDisplay = document.getElementById('points-balance');
+            if (pointsDisplay) {
+                pointsDisplay.textContent = user.loyaltyPoints || 0; // Add fallback to 0
+                console.log("Updated points display to:", user.loyaltyPoints); // Debug line
+            } else {
+                console.log("Could not find points-balance element"); // Debug line
+            }
+        }
+    
+        // Add points when user makes a purchase
+        // Add points when user makes a purchase
+        function addLoyaltyPoints(amount) {
+            // Ensure amount is a valid number
+            amount = parseFloat(amount) || 0;
+            console.log("Adding loyalty points for amount:", amount);
+            
+            // Calculate points (50 points per $10 spent)
+            const pointsEarned = Math.floor((amount / 10) * 50);
+            console.log("Points earned:", pointsEarned);
+            
+            // Add points to user
+            user.loyaltyPoints = (user.loyaltyPoints || 0) + pointsEarned;
+            
+            // Save to localStorage
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            
+            // Update displays
+            updatePointsDisplay();
+            
+            // Show points earned notification
+            showPointsEarned(pointsEarned);
+            
+            return pointsEarned;
+        }
+    
+        // Show points earned notification
+        function showPointsEarned(points) {
+            const notification = document.createElement('div');
+            notification.className = 'points-earned';
+            notification.innerHTML = `<div>🎉 You earned</div><div>${points} points!</div>`;
+            document.body.appendChild(notification);
+            
+            // Remove notification after animation completes
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+    
+        // Award points for leaving reviews
+        function awardReviewPoints() {
+            const reviewPoints = 25;
+            user.loyaltyPoints += reviewPoints;
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            updatePointsDisplay();
+            showPointsEarned(reviewPoints);
+        }
+    
+        // Modify the submit order function to add loyalty points
+        const originalSubmitHandler = document.getElementById('submit-btn').onclick;
+        document.getElementById('submit-btn').onclick = function() {
+            const name = document.getElementById('name').value;
+            const card = document.getElementById('card').value;
+            
+            if (!name || !card) {
+                return alert('Please fill in payment details.');
+            }
+            
+            // Calculate total amount spent
+            let total = 0;
+            cart.forEach(item => {
+                total += item.price;
+            });
+            
+            // Add loyalty points
+            const pointsEarned = addLoyaltyPoints(total);
+            
+            // Continue with original handler
+            document.getElementById('checkout-form').style.display = 'none';
+            
+            // Show success message with points
+            const successElem = document.getElementById('order-success');
+            successElem.innerHTML = `✅ Order Placed!<br><span style="font-size: 1.2rem;">You earned ${pointsEarned} loyalty points!</span>`;
+            successElem.style.display = 'flex';
+            
+            // Clear cart
+            cart = [];
+            updateCartDisplay();
+            
+            // Hide success message after delay
+            setTimeout(() => {
+                document.getElementById('order-success').style.display = 'none';
+            }, 4000);
+        };
+    
+        // Update the post review function to award points
+        window.postReview = function() {
+            document.getElementById("review-section").style.display = "none";
+            document.getElementById("success-message").style.display = "block";
+            
+            // Award points for leaving a review
+            awardReviewPoints();
+        };
+    
+        // Initialize loyalty program
+        initializeLoyaltyProgram();
 });
 
 

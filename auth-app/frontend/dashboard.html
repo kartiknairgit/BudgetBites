@@ -532,6 +532,8 @@
         function postReview() {
             document.getElementById("review-section").style.display = "none";
             document.getElementById("success-message").style.display = "block";
+
+            awardReviewPoints();
         }
         </script>
        
@@ -554,6 +556,13 @@
                     <h2>Welcome, <span id="vendor-name-display">Vendor</span>!</h2>
                     <p>Manage your food listings and help provide affordable food options to students and low-income households.</p>
                     <div class="decoration"></div>
+                    <div class="loyalty-points">
+                        <div class="loyalty-icon">🏆</div>
+                        <div class="loyalty-details">
+                            <span id="points-balance">0</span> Loyalty Points
+                            <button id="view-rewards" class="btn-sm">View Rewards</button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="vendor-actions">
@@ -981,5 +990,69 @@
     </div>
 
     <script src="theme.js"></script>
+    <!-- Rewards Modal -->
+    <div id="rewards-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Your Rewards</h2>
+                <span class="close-modal" id="close-rewards-modal">&times;</span>
+            </div>
+            <div class="rewards-content">
+                <div class="points-summary">
+                    <h3>Your Points: <span id="modal-points-balance">0</span></h3>
+                    <div class="loyalty-tier">
+                        Tier: <span id="loyalty-tier-display">Bronze</span>
+                        <span id="tier-icon">🥉</span>
+                    </div>
+                    <p class="tier-info">Earn 500 more points to reach Silver tier!</p>
+                </div>
+                <h3>Available Rewards</h3>
+                <div class="rewards-list">
+                    <div class="reward-item">
+                        <div class="reward-info">
+                            <div class="reward-title">Free Delivery</div>
+                            <div class="reward-description">Get free delivery on your next order</div>
+                        </div>
+                        <div class="reward-points">500 pts</div>
+                        <button class="btn-sm redeem-btn" data-points="500" data-reward="Free Delivery">Redeem</button>
+                    </div>
+                    <div class="reward-item">
+                        <div class="reward-info">
+                            <div class="reward-title">10% Discount</div>
+                            <div class="reward-description">10% off your next purchase</div>
+                        </div>
+                        <div class="reward-points">1000 pts</div>
+                        <button class="btn-sm redeem-btn" data-points="1000" data-reward="10% Discount">Redeem</button>
+                    </div>
+                    <div class="reward-item">
+                        <div class="reward-info">
+                            <div class="reward-title">Free Meal</div>
+                            <div class="reward-description">Get any meal under $10 for free</div>
+                        </div>
+                        <div class="reward-points">2000 pts</div>
+                        <button class="btn-sm redeem-btn" data-points="2000" data-reward="Free Meal">Redeem</button>
+                    </div>
+                    <div class="reward-item">
+                        <div class="reward-info">
+                            <div class="reward-title">VIP Experience</div>
+                            <div class="reward-description">Special chef's tasting meal for two</div>
+                        </div>
+                        <div class="reward-points">5000 pts</div>
+                        <button class="btn-sm redeem-btn" data-points="5000" data-reward="VIP Experience">Redeem</button>
+                    </div>
+                </div>
+                <div class="rewards-footer">
+                    <p><strong>How to earn points:</strong></p>
+                    <ul>
+                        <li>50 points for every $10 spent</li>
+                        <li>100 bonus points for referring a friend</li>
+                        <li>25 points for leaving a review</li>
+                        <li>200 points for your birthday month purchases</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="loyalty-points-fix.js"></script>
 </body>
 </html>
